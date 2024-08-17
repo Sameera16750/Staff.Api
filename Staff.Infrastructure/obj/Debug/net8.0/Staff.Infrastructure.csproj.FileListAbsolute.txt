@@ -1,0 +1,14 @@
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/bin/Debug/net8.0/Staff.Infrastructure.deps.json
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/bin/Debug/net8.0/Staff.Infrastructure.runtimeconfig.json
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/bin/Debug/net8.0/Staff.Infrastructure.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/bin/Debug/net8.0/Staff.Infrastructure.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.csproj.AssemblyReference.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.AssemblyInfoInputs.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.AssemblyInfo.cs
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.csproj.CoreCompileInputs.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/refint/Staff.Infrastructure.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.genruntimeconfig.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/ref/Staff.Infrastructure.dll

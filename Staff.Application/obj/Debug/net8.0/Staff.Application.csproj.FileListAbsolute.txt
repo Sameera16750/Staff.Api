@@ -1,0 +1,17 @@
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Application.deps.json
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Application.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Application.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Core.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Infrastructure.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Core.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/bin/Debug/net8.0/Staff.Infrastructure.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.csproj.AssemblyReference.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.AssemblyInfoInputs.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.AssemblyInfo.cs
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.csproj.CoreCompileInputs.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.csproj.CopyComplete
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/refint/Staff.Application.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/ref/Staff.Application.dll

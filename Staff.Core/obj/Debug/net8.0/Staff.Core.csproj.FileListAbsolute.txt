@@ -1,0 +1,11 @@
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/bin/Debug/net8.0/Staff.Core.deps.json
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/bin/Debug/net8.0/Staff.Core.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/bin/Debug/net8.0/Staff.Core.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.AssemblyInfoInputs.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.AssemblyInfo.cs
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.csproj.CoreCompileInputs.cache
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/refint/Staff.Core.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/ref/Staff.Core.dll
