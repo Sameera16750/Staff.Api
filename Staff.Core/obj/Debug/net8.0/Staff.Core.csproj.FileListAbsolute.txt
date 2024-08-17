@@ -9,3 +9,4 @@
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/refint/Staff.Core.dll
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.pdb
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/ref/Staff.Core.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Core/obj/Debug/net8.0/Staff.Core.sourcelink.json

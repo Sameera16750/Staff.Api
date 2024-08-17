@@ -15,3 +15,4 @@
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/refint/Staff.Application.dll
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.pdb
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/ref/Staff.Application.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Application/obj/Debug/net8.0/Staff.Application.sourcelink.json

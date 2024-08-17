@@ -12,3 +12,7 @@
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.pdb
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.genruntimeconfig.cache
 /home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/ref/Staff.Infrastructure.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/bin/Debug/net8.0/Staff.Core.dll
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/bin/Debug/net8.0/Staff.Core.pdb
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.sourcelink.json
+/home/sameera/Public/projects/company/DevX-APIs/Staff.Api/Staff.Infrastructure/obj/Debug/net8.0/Staff.Infrastructure.csproj.CopyComplete
