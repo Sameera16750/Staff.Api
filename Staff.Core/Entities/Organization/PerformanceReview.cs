@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Staff.Core.Entities.Company
+namespace Staff.Core.Entities.Organization
 {
     [Table("PerformanceReviews")]
     public class PerformanceReview{

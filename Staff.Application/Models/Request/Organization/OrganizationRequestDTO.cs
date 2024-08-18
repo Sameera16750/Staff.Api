@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using Staff.Core.Entities.Company;
+using Staff.Core.Entities.Organization;
 
-namespace Staff.Application.Models.Request.Company
+namespace Staff.Application.Models.Request.Organization
 {
-    public class CompanyRequestDto
+    public class OrganizationRequestDto
     {
         public long? Id { get; set; } = 0;
 
@@ -20,15 +20,15 @@ namespace Staff.Application.Models.Request.Company
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public required string Email { get; set; }
 
-        public CompanyDetails MapToEntity(CompanyRequestDto companyRequestDto, int status)
+        public OrganizationDetails MapToEntity(OrganizationRequestDto organizationRequestDto, int status)
         {
-            return new CompanyDetails
+            return new OrganizationDetails
             {
-                Id = companyRequestDto.Id ?? 0,
-                Address = companyRequestDto.Address,
-                ContactNo = companyRequestDto.ContactNo,
-                Email = companyRequestDto.Email,
-                Name = companyRequestDto.Name,
+                Id = organizationRequestDto.Id ?? 0,
+                Address = organizationRequestDto.Address,
+                ContactNo = organizationRequestDto.ContactNo,
+                Email = organizationRequestDto.Email,
+                Name = organizationRequestDto.Name,
                 Status = status
             };
         }

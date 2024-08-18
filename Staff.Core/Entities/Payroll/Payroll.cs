@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Staff.Core.Entities.Company;
+using Staff.Core.Entities.Organization;
 
 namespace Staff.Core.Entities.Payroll
 {

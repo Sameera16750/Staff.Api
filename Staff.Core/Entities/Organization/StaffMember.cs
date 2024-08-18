@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Staff.Core.Entities.Authentication;
 
-namespace Staff.Core.Entities.Company;
+namespace Staff.Core.Entities.Organization;
 
 [Table("StaffMember")]
 public class StaffMember {
@@ -33,5 +33,5 @@ public class StaffMember {
     public Role Role { get; set; } 
 
     [Required] 
-    public CompanyDetails CompanyDetails { get; set; }
+    public OrganizationDetails OrganizationDetails { get; set; }
 }

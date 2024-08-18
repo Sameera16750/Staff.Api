@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Staff.Core.Entities;
 using Staff.Core.Entities.Attendance;
-using Staff.Core.Entities.Company;
+using Staff.Core.Entities.Organization;
 using Staff.Core.Entities.Payroll;
 
 namespace Staff.Infrastructure.DBContext;
@@ -17,7 +16,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
     }
 
-    public DbSet<CompanyDetails> CompanyDetail { get; set; }
+    public DbSet<OrganizationDetails> Organization { get; set; }
     public DbSet<Department> Department { get; set; }
     public DbSet<StaffMember> StaffMember { get; set; }
     public DbSet<Attendance> Attendances { get; set; }

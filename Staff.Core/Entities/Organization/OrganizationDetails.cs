@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Staff.Core.Entities.Company
+namespace Staff.Core.Entities.Organization
 {
-    [Table("CompanyDetail")]
-    public class CompanyDetails
+    [Table("OrganizationDetails")]
+    public class OrganizationDetails
     {
         [Key] public long Id { get; set; }
 
