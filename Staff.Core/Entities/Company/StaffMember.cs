@@ -33,5 +33,5 @@ public class StaffMember {
     public Role Role { get; set; } 
 
     [Required] 
-    public Company Company { get; set; }
+    public CompanyDetails CompanyDetails { get; set; }
 }

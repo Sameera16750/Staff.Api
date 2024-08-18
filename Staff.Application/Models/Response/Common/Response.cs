@@ -4,8 +4,8 @@ namespace Staff.Application.Models.Response.Common
 {
     public class IdResponse<T>
     {
-        public T id { get; set; }
-        public string Message { get; set; }
+        public required T Id { get; set; }
+        public required string Message { get; set; }
     }
     
     public class MessageResponse

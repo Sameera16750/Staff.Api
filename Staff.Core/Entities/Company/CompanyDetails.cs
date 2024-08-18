@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Staff.Core.Entities.Company
 {
-    [Table("Company")]
-    public class Company
+    [Table("CompanyDetail")]
+    public class CompanyDetails
     {
         [Key] public long Id { get; set; }
 

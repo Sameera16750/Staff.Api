@@ -1,4 +1,6 @@
 
+using Staff.Application.Configs;
+using Staff.Infrastructure.Configs;
 using Staff.Infrastructure.DBContext;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>();
+
+builder.Services.AddApplicationDependencyGroups();
+builder.Services.AddInfrastructureDependencyGroups();
 
 var app = builder.Build();
 

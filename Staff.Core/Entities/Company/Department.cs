@@ -10,7 +10,7 @@ namespace Staff.Core.Entities.Company
         public long Id { get; set; } 
 
         [Required]
-        public Company Company { get; set; }
+        public CompanyDetails CompanyDetails { get; set; }
 
         [Required]
         public string Name { get; set; }

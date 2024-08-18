@@ -17,7 +17,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
     }
 
-    public DbSet<Company> Company { get; set; }
+    public DbSet<CompanyDetails> CompanyDetail { get; set; }
     public DbSet<Department> Department { get; set; }
     public DbSet<StaffMember> StaffMember { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
