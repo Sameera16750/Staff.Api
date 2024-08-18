@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.DBContext;
+using Staff.Infrastructure.Models;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 namespace Staff.Infrastructure.Repositories.Implementations.Organization;
@@ -37,16 +38,26 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
         return result;
     }
 
-    public async Task<List<OrganizationDetails>> GetAllOrganizations(string search)
+    public async Task<PaginatedListDto<OrganizationDetails>?> GetAllOrganizations(string search, int pageNumber,
+        int pageSize)
     {
-        var result = await context.Organization.Where(o =>
-            (o.Name.Contains(search) || o.Address.Contains(search) || o.Email.Contains(search) ||
-             o.ContactNo.Contains(search))).ToListAsync();
+        var totalCount = await context.Organization.CountAsync();
+
+        var result = await context.Organization
+            .Where(o =>
+                (o.Name.Contains(search) || o.Address.Contains(search) || o.Email.Contains(search) ||
+                 o.ContactNo.Contains(search)))
+            .OrderBy(o => o.Id).Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        var response = PaginatedListDto<OrganizationDetails>.Create(source: result.AsQueryable(),
+            pageNumber: pageNumber, pageSize: pageSize, totalItems: totalCount);
         if (result.Count < 1)
         {
             logger.LogWarning("Organization not found");
+            return null;
         }
 
-        return result;
+        return response;
     }
 }

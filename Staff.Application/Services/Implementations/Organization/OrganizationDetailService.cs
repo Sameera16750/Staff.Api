@@ -82,19 +82,20 @@ namespace Staff.Application.Services.Implementations.Organization
             try
             {
                 logger.LogInformation("Search organizations processing..");
-                var list = await organizationDetailRepo.GetAllOrganizations(search);
-                var result =
-                    PaginatedListResponseDto<OrganizationDetails>.Create(list.AsQueryable(), pageNumber, pageSize);
+                var result = await organizationDetailRepo.GetAllOrganizations(search: search, pageNumber: pageNumber,
+                    pageSize: pageSize);
+                var response = new PaginatedListResponseDto<OrganizationDetailsResponseDto>();
+                if (result != null)
+                {
+                    response = response.ToPaginatedListResponse(
+                        result,
+                        new OrganizationDetailsResponseDto().MapToResponseList(result.Items)
+                    );
+                }
 
                 return responseHelper.CreateResponseWithCode<dynamic>(
                     HttpStatusCode.OK,
-                    new PaginatedListResponseDto<OrganizationDetailsResponseDto>
-                    (
-                        result.PageNumber,
-                        result.PageSize,
-                        result.TotalItems,
-                        new OrganizationDetailsResponseDto().MapToResponseList(result.Items)
-                    )
+                    response
                 );
             }
             catch (Exception e)

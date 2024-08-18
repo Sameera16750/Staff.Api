@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
@@ -35,7 +36,7 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<OrganizationDetailsResponseDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpGet("list")]
-        public async Task<IActionResult> GetOrganizationList([FromQuery] OrganizationListRequestDto query)
+        public async Task<IActionResult> GetOrganizationList([FromQuery] PaginatedListRequestDto query)
         {
             var result = await organizationDetailService.GetAllOrganizations(
                 pageNumber: query.PageNumber,
