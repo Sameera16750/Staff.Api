@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Staff.Core.Entities
+namespace Staff.Core.Entities.Payroll
 {
-    [Table("Tax")]
-    public class Tax
+    [Table("Deductions")]
+    public class Deductions
     {
         [Key]
         public long Id { get; set; }
@@ -12,12 +12,10 @@ namespace Staff.Core.Entities
         [Required]
         public string Name { get; set; }
 
-        public string Description { get; set; }
-
         [Required]
-        public Double Rate { get; set; }
+        public Double Amount { get; set; } 
 
         [Required]
         public int Status { get; set; }
-    }
+    }   
 }

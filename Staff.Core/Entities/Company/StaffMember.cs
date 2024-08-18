@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Staff.Core.Entities.Authentication;
 
-namespace Staff.Core.Entities;
+namespace Staff.Core.Entities.Company;
 
 [Table("StaffMember")]
 public class StaffMember {

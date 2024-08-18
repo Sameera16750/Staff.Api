@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Staff.Core.Entities
+namespace Staff.Core.Entities.Attendance
 {
     [Table("LeaveStatus")]
     public class LeaveStatus

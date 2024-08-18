@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Staff.Core.Entities;
+using Staff.Core.Entities.Attendance;
+using Staff.Core.Entities.Company;
+using Staff.Core.Entities.Payroll;
 
 namespace Staff.Infrastructure.DBContext;
 

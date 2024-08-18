@@ -1,16 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Staff.Core.Entities
+namespace Staff.Core.Entities.Payroll
 {
-    [Table("LeaveType")]
-    public class LeaveType
+    [Table("Bonus")]
+    public class Bonus
     {
-        [Key]
+        [Key] 
         public long Id { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public string Name { get; set; } 
+
+        [Required]
+        public Double Amount { get; set; } 
 
         [Required]
         public int Status { get; set; }

@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Staff.Core.Entities.Company;
 
-namespace Staff.Core.Entities
+namespace Staff.Core.Entities.Attendance
 {
     [Table("Attendance")]
     public class Attendance
