@@ -1,10 +1,11 @@
 using System.Net;
 using Staff.Application.Helpers.ResourceHelper;
 using Staff.Application.Models.Response.Common;
+using Staff.Core.Constants;
 
 namespace Staff.Application.Helpers.ResponseHelper;
 
-public class ResponseHelper(IMessageResourceHelper messageResourceHelper):IResponseHelper
+public class ResponseHelper(IMessageResourceHelper messageResourceHelper) : IResponseHelper
 {
     public MessageResponse CreateMessageResponse(string message)
     {
@@ -29,6 +30,15 @@ public class ResponseHelper(IMessageResourceHelper messageResourceHelper):IRespo
         {
             StatusCode = statusCode,
             Response = data
+        };
+    }
+
+    public ResponseWithCode<dynamic> InternalServerErrorResponse()
+    {
+        return new ResponseWithCode<dynamic>
+        {
+            StatusCode = HttpStatusCode.InternalServerError,
+            Response = CreateMessageResponse(Constants.Messages.Error.InternalServerError)
         };
     }
 }

@@ -25,4 +25,9 @@ public class OrganizationDetailsResponseDto
             ContactNo = organizationDetails.ContactNo,
         };
     }
+
+    public List<OrganizationDetailsResponseDto> MapToResponseList(List<OrganizationDetails> list)
+    {
+        return list.Select(MapToResponse).ToList();
+    }
 }

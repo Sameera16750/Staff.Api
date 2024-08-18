@@ -1,6 +1,5 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
-using Staff.Application.Helpers.ResourceHelper;
 using Staff.Application.Helpers.ResponseHelper;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
@@ -51,14 +50,7 @@ namespace Staff.Application.Services.Implementations.Organization
             catch (Exception e)
             {
                 Console.Error.WriteLine(e);
-                var response = responseHelper.CreateMessageResponse(
-                    Constants.Messages.Error.InternalServerError
-                );
-
-                return responseHelper.CreateResponseWithCode<dynamic>(
-                    HttpStatusCode.InternalServerError,
-                    response
-                );
+                return responseHelper.InternalServerErrorResponse();
             }
         }
 
@@ -81,8 +73,34 @@ namespace Staff.Application.Services.Implementations.Organization
             catch (Exception e)
             {
                 Console.Error.WriteLine(e);
-                return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.InternalServerError,
-                    responseHelper.CreateMessageResponse(Constants.Messages.Error.InternalServerError));
+                return responseHelper.InternalServerErrorResponse();
+            }
+        }
+
+        public async Task<ResponseWithCode<dynamic>> GetAllOrganizations(int pageNumber, int pageSize, string search)
+        {
+            try
+            {
+                logger.LogInformation("Search organizations processing..");
+                var list = await organizationDetailRepo.GetAllOrganizations(search);
+                var result =
+                    PaginatedListResponseDto<OrganizationDetails>.Create(list.AsQueryable(), pageNumber, pageSize);
+
+                return responseHelper.CreateResponseWithCode<dynamic>(
+                    HttpStatusCode.OK,
+                    new PaginatedListResponseDto<OrganizationDetailsResponseDto>
+                    (
+                        result.PageNumber,
+                        result.PageSize,
+                        result.TotalItems,
+                        new OrganizationDetailsResponseDto().MapToResponseList(result.Items)
+                    )
+                );
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return responseHelper.InternalServerErrorResponse();
             }
         }
     }

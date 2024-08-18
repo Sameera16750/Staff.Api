@@ -36,4 +36,17 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 
         return result;
     }
+
+    public async Task<List<OrganizationDetails>> GetAllOrganizations(string search)
+    {
+        var result = await context.Organization.Where(o =>
+            (o.Name.Contains(search) || o.Address.Contains(search) || o.Email.Contains(search) ||
+             o.ContactNo.Contains(search))).ToListAsync();
+        if (result.Count < 1)
+        {
+            logger.LogWarning("Organization not found");
+        }
+
+        return result;
+    }
 }

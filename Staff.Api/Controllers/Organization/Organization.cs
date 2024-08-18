@@ -31,6 +31,19 @@ namespace Staff.Api.Controllers.Organization
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<OrganizationDetailsResponseDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpGet("list")]
+        public async Task<IActionResult> GetOrganizationList([FromQuery] OrganizationListRequestDto query)
+        {
+            var result = await organizationDetailService.GetAllOrganizations(
+                pageNumber: query.PageNumber,
+                pageSize: query.PageSize,
+                search: query.SearchTerm);
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+
         #endregion
     }
 }

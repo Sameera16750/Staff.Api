@@ -6,4 +6,6 @@ public interface IOrganizationDetailRepo
 {
     Task<long> SaveCompany(OrganizationDetails organizationDetails);
     Task<OrganizationDetails?> GetDetails(long id);
+    
+    Task<List<OrganizationDetails>> GetAllOrganizations(string search);
 }
