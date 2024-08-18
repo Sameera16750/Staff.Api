@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.DBContext;
@@ -8,21 +9,31 @@ namespace Staff.Infrastructure.Repositories.Implementations.Organization;
 public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<IOrganizationDetailRepo> logger)
     : IOrganizationDetailRepo
 {
-    private readonly ApplicationDbContext _context = context;
-    private readonly ILogger<IOrganizationDetailRepo> _logger = logger;
-
     public async Task<long> SaveCompany(OrganizationDetails organizationDetails)
     {
-        _logger.LogInformation("Saving company");
-        _context.Add(organizationDetails);
-        var result = await _context.SaveChangesAsync();
+        logger.LogInformation("Saving company");
+        context.Add(organizationDetails);
+        var result = await context.SaveChangesAsync();
         if (result < 1)
         {
-            _logger.LogError("Company saving failed");
+            logger.LogError("Company saving failed");
             return 0;
         }
 
-        _logger.LogInformation("Company saving Success");
+        logger.LogInformation("Company saving Success");
         return organizationDetails.Id;
+    }
+
+    public async Task<OrganizationDetails?> GetDetails(long id)
+    {
+        logger.LogInformation("Getting details");
+        var result = await context.Organization.FirstOrDefaultAsync(o => o.Id == id);
+        if (result == null)
+        {
+            logger.LogWarning("Organization not found");
+            return null;
+        }
+
+        return result;
     }
 }
