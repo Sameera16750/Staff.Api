@@ -68,5 +68,29 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("INTERNAL_ERROR", resourceCulture);
             }
         }
+        
+        internal static string UPDATE_SUCCESS {
+            get {
+                return ResourceManager.GetString("UPDATE_SUCCESS", resourceCulture);
+            }
+        }
+        
+        internal static string UPDATE_FAILED {
+            get {
+                return ResourceManager.GetString("UPDATE_FAILED", resourceCulture);
+            }
+        }
+        
+        internal static string DELETE_FAILED {
+            get {
+                return ResourceManager.GetString("DELETE_FAILED", resourceCulture);
+            }
+        }
+        
+        internal static string DELETE_SUCCESS {
+            get {
+                return ResourceManager.GetString("DELETE_SUCCESS", resourceCulture);
+            }
+        }
     }
 }

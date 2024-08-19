@@ -5,7 +5,6 @@ namespace Staff.Application.Models.Request.Organization
 {
     public class OrganizationRequestDto
     {
-        public long? Id { get; set; } = 0;
 
         [Required(ErrorMessage = "Name is required")]
         public required string Name { get; set; }
@@ -14,6 +13,7 @@ namespace Staff.Application.Models.Request.Organization
         public required string Address { get; set; }
 
         [Required(ErrorMessage = "Phone number is required")]
+        [Phone(ErrorMessage = "Invalid phone number")]
         public required string ContactNo { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
@@ -24,7 +24,7 @@ namespace Staff.Application.Models.Request.Organization
         {
             return new OrganizationDetails
             {
-                Id = organizationRequestDto.Id ?? 0,
+                Id = 0,
                 Address = organizationRequestDto.Address,
                 ContactNo = organizationRequestDto.ContactNo,
                 Email = organizationRequestDto.Email,

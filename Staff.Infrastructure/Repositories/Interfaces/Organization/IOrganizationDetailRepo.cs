@@ -5,8 +5,8 @@ namespace Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 public interface IOrganizationDetailRepo
 {
-    Task<long> SaveCompany(OrganizationDetails organizationDetails);
-    Task<OrganizationDetails?> GetDetails(long id);
-    
-    Task<PaginatedListDto<OrganizationDetails>?> GetAllOrganizations(string search,int pageNumber, int pageSize);
+    Task<long> SaveOrganization(OrganizationDetails organizationDetails);
+    Task<long> UpdateOrganization(OrganizationDetails organizationDetails);
+    Task<OrganizationDetails?> GetDetails(long id,int status);
+    Task<PaginatedListDto<OrganizationDetails>?> GetAllOrganizations(string search,int pageNumber, int pageSize,int status);
 }

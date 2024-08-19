@@ -16,36 +16,20 @@ namespace Staff.Application.Services.Implementations.Organization
         ILogger<IOrganizationDetailService> logger,
         IResponseHelper responseHelper) : IOrganizationDetailService
     {
-        public async Task<ResponseWithCode<dynamic>> SaveCompany(OrganizationRequestDto organization)
+        public async Task<ResponseWithCode<dynamic>> SaveOrganization(OrganizationRequestDto organization)
         {
             try
             {
                 logger.LogInformation("Save organization processing..");
 
-                OrganizationDetails newOrganization = organization.MapToEntity(organization, 1);
-                var result = await organizationDetailRepo.SaveCompany(newOrganization);
+                OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
+                var result = await organizationDetailRepo.SaveOrganization(newOrganization);
                 if (result > 0)
                 {
-                    var response = responseHelper.CreateIdResponse(
-                        result,
-                        Constants.Messages.Success.SaveSuccess
-                    );
-                    return responseHelper.CreateResponseWithCode<dynamic>(
-                        HttpStatusCode.Created,
-                        response
-                    );
+                    return responseHelper.SaveSuccessResponse(result);
                 }
-                else
-                {
-                    var response = responseHelper.CreateMessageResponse(
-                        Constants.Messages.Error.SaveFailed
-                    );
 
-                    return responseHelper.CreateResponseWithCode<dynamic>(
-                        HttpStatusCode.InternalServerError,
-                        response
-                    );
-                }
+                return responseHelper.SaveFailedResponse();
             }
             catch (Exception e)
             {
@@ -54,12 +38,12 @@ namespace Staff.Application.Services.Implementations.Organization
             }
         }
 
-        public async Task<ResponseWithCode<dynamic>> GetOrganizationById(long id)
+        public async Task<ResponseWithCode<dynamic>> GetOrganizationById(long id, int status)
         {
             try
             {
                 logger.LogInformation("Find organization processing..");
-                var result = await organizationDetailRepo.GetDetails(id);
+                var result = await organizationDetailRepo.GetDetails(id, status);
 
                 if (result != null)
                 {
@@ -67,8 +51,7 @@ namespace Staff.Application.Services.Implementations.Organization
                     return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, dto);
                 }
 
-                return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.NotFound,
-                    responseHelper.CreateMessageResponse(Constants.Messages.Error.DataNotFound));
+                return responseHelper.NotFoundErrorResponse();
             }
             catch (Exception e)
             {
@@ -77,13 +60,14 @@ namespace Staff.Application.Services.Implementations.Organization
             }
         }
 
-        public async Task<ResponseWithCode<dynamic>> GetAllOrganizations(int pageNumber, int pageSize, string search)
+        public async Task<ResponseWithCode<dynamic>> GetAllOrganizations(int pageNumber, int pageSize, string search,
+            int status)
         {
             try
             {
                 logger.LogInformation("Search organizations processing..");
                 var result = await organizationDetailRepo.GetAllOrganizations(search: search, pageNumber: pageNumber,
-                    pageSize: pageSize);
+                    pageSize: pageSize, status: status);
                 var response = new PaginatedListResponseDto<OrganizationDetailsResponseDto>();
                 if (result != null)
                 {
@@ -97,6 +81,56 @@ namespace Staff.Application.Services.Implementations.Organization
                     HttpStatusCode.OK,
                     response
                 );
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return responseHelper.InternalServerErrorResponse();
+            }
+        }
+
+        public async Task<ResponseWithCode<dynamic>> UpdateOrganization(OrganizationRequestDto organization, long id)
+        {
+            try
+            {
+                logger.LogInformation("Update organization processing..");
+
+                OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
+                newOrganization.Id = id;
+                var result = await organizationDetailRepo.UpdateOrganization(newOrganization);
+                if (result > 0)
+                {
+                    return responseHelper.UpdateSuccessResponse(result);
+                }
+
+                return responseHelper.UpdateFailedResponse();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return responseHelper.InternalServerErrorResponse();
+            }
+        }
+
+        public async Task<ResponseWithCode<dynamic>> DeleteOrganization(long id)
+        {
+            try
+            {
+                logger.LogInformation("Delete organization processing..");
+                var org = await organizationDetailRepo.GetDetails(id, Constants.Status.Active);
+                if (org != null && org.Status != Constants.Status.Deleted)
+                {
+                    org.Status = Constants.Status.Deleted;
+                    var result = await organizationDetailRepo.UpdateOrganization(org);
+                    if (result < 1)
+                    {
+                        return responseHelper.DeleteFailedErrorResponse();
+                    }
+
+                    return responseHelper.DeleteSuccessResponse(result);
+                }
+
+                return responseHelper.NotFoundErrorResponse();
             }
             catch (Exception e)
             {

@@ -30,4 +30,16 @@
     <data name="INTERNAL_ERROR" xml:space="preserve">
         <value>Internel Server Error</value>
     </data>
+    <data name="UPDATE_SUCCESS" xml:space="preserve">
+        <value>Update oparation was successfull</value>
+    </data>
+    <data name="UPDATE_FAILED" xml:space="preserve">
+        <value>Update oparation failed</value>
+    </data>
+    <data name="DELETE_FAILED" xml:space="preserve">
+        <value>Delete oparation failed</value>
+    </data>
+    <data name="DELETE_SUCCESS" xml:space="preserve">
+        <value>Delete oparation was successfull</value>
+    </data>
 </root>
