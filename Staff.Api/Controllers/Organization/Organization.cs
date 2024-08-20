@@ -48,6 +48,7 @@ namespace Staff.Api.Controllers.Organization
         }
 
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOrganization(long id, [FromBody] OrganizationRequestDto body)

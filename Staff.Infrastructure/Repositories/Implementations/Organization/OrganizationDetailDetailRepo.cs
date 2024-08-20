@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Staff.Core.Constants;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.DBContext;
 using Staff.Infrastructure.Models;
@@ -27,8 +28,17 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 
     public async Task<long> UpdateOrganization(OrganizationDetails organizationDetails)
     {
+        logger.LogInformation("Checking available organization");
+        var existing = await context.Organization.FirstOrDefaultAsync(o =>
+            (o.Id == organizationDetails.Id && o.Status == Constants.Status.Active));
+        if (existing == null)
+        {
+            logger.LogError("Organization doesn't exist");
+            return 0;
+        }
         logger.LogInformation("Updating Organization");
-        context.Update(organizationDetails);
+        context.Entry(existing).CurrentValues.SetValues(organizationDetails);
+        context.Entry(existing).State = EntityState.Modified;
         var result = await context.SaveChangesAsync();
         if (result < 1)
         {
