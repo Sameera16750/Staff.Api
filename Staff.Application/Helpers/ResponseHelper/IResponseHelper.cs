@@ -16,4 +16,5 @@ public interface IResponseHelper
     ResponseWithCode<dynamic> SaveSuccessResponse<T>(T id);
     ResponseWithCode<dynamic> DeleteSuccessResponse<T>(T id);
     ResponseWithCode<dynamic> UpdateSuccessResponse<T>(T id);
+    ResponseWithCode<dynamic> BadRequest(string message);
 }

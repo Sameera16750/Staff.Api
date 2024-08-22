@@ -94,7 +94,7 @@ namespace Staff.Application.Services.Implementations.Organization
             try
             {
                 logger.LogInformation("Update organization processing..");
-                
+
                 OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
                 newOrganization.Id = id;
                 var result = await organizationDetailRepo.UpdateOrganization(newOrganization);

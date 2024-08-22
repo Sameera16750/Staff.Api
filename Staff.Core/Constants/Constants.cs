@@ -26,6 +26,7 @@ public static class Constants
             public const string DeleteFailed = "DELETE_FAILED";
             public const string DataNotFound = "DATA_NOT_FOUND";
             public const string InternalServerError = "INTERNAL_ERROR";
+            public const string InvalidOrganization = "INVALID_ORGANIZATION";
         }
 
         #endregion
@@ -40,6 +41,17 @@ public static class Constants
     {
         public static readonly int Active = 1;
         public static readonly int Deleted = 0;
+    }
+
+    #endregion
+
+    #region Process Status
+
+    public static class ProcessStatus
+    {
+        public static readonly int Success = 1;
+        public static readonly int Failed= 0;
+        public static readonly int NotFound = -1;
     }
 
     #endregion

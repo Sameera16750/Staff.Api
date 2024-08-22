@@ -10,10 +10,10 @@ namespace Staff.Core.Entities.Organization
         public long Id { get; set; } 
 
         [Required]
-        public OrganizationDetails OrganizationDetails { get; set; }
+        public required OrganizationDetails OrganizationDetails { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public int Status {get; set;}
     }

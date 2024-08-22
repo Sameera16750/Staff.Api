@@ -36,6 +36,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
             logger.LogError("Organization doesn't exist");
             return 0;
         }
+
         logger.LogInformation("Updating Organization");
         context.Entry(existing).CurrentValues.SetValues(organizationDetails);
         context.Entry(existing).State = EntityState.Modified;

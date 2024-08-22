@@ -92,5 +92,11 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("DELETE_SUCCESS", resourceCulture);
             }
         }
+        
+        internal static string INVALID_ORGANIZATION {
+            get {
+                return ResourceManager.GetString("INVALID_ORGANIZATION", resourceCulture);
+            }
+        }
     }
 }

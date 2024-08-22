@@ -83,7 +83,7 @@ public class ResponseHelper(IMessageResourceHelper messageResourceHelper) : IRes
         return new ResponseWithCode<dynamic>
         {
             StatusCode = HttpStatusCode.Created,
-            Response = CreateIdResponse(id,Constants.Messages.Success.SaveSuccess)
+            Response = CreateIdResponse(id, Constants.Messages.Success.SaveSuccess)
         };
     }
 
@@ -92,7 +92,7 @@ public class ResponseHelper(IMessageResourceHelper messageResourceHelper) : IRes
         return new ResponseWithCode<dynamic>
         {
             StatusCode = HttpStatusCode.OK,
-            Response = CreateIdResponse(id,Constants.Messages.Success.DeleteSuccess)
+            Response = CreateIdResponse(id, Constants.Messages.Success.DeleteSuccess)
         };
     }
 
@@ -101,7 +101,16 @@ public class ResponseHelper(IMessageResourceHelper messageResourceHelper) : IRes
         return new ResponseWithCode<dynamic>
         {
             StatusCode = HttpStatusCode.Created,
-            Response = CreateIdResponse(id,Constants.Messages.Success.UpdateSuccess)
+            Response = CreateIdResponse(id, Constants.Messages.Success.UpdateSuccess)
+        };
+    }
+
+    public ResponseWithCode<dynamic> BadRequest(string message)
+    {
+        return new ResponseWithCode<dynamic>
+        {
+            StatusCode = HttpStatusCode.BadRequest,
+            Response = CreateMessageResponse(message)
         };
     }
 }

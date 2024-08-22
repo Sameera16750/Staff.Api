@@ -42,4 +42,7 @@
     <data name="DELETE_SUCCESS" xml:space="preserve">
         <value>Delete oparation was successfull</value>
     </data>
+    <data name="INVALID_ORGANIZATION" xml:space="preserve">
+        <value>Provided organization Invalid</value>
+    </data>
 </root>

@@ -13,6 +13,7 @@ public static class ApplicationDiConfigs
         services.AddScoped<IResponseHelper, ResponseHelper>();
         services.AddScoped<IMessageResourceHelper, ResourceHelper.MessageResourceHelper>();
         services.AddScoped<IOrganizationDetailService, OrganizationDetailService>();
+        services.AddScoped<IDepartmentService, DepartmentService>();
         return services;
     }
 }

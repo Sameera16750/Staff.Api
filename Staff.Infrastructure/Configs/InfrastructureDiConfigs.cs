@@ -9,6 +9,7 @@ public static class InfrastructureDiConfigs
     public static IServiceCollection AddInfrastructureDependencyGroups(this IServiceCollection services)
     {
         services.AddScoped<IOrganizationDetailRepo, OrganizationDetailDetailRepo>();
+        services.AddScoped<IDepartmentRepo, DepartmentRepo>();
         return services;
     }
 }
