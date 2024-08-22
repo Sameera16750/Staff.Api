@@ -98,5 +98,11 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("INVALID_ORGANIZATION", resourceCulture);
             }
         }
+        
+        internal static string INVALID_DEPARTMENT {
+            get {
+                return ResourceManager.GetString("INVALID_DEPARTMENT", resourceCulture);
+            }
+        }
     }
 }

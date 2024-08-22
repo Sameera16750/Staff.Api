@@ -6,4 +6,6 @@ namespace Staff.Application.Services.Interfaces.Organization;
 public interface IDepartmentService
 {
     Task<ResponseWithCode<dynamic>> SaveDepartment(DepartmentRequestDto requestDto);
+    Task<ResponseWithCode<dynamic>> GetDepartment(long id);
+    Task<ResponseWithCode<dynamic>> UpdateDepartment(DepartmentRequestDto requestDto, long id);
 }

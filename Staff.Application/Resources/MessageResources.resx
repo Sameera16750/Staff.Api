@@ -45,4 +45,7 @@
     <data name="INVALID_ORGANIZATION" xml:space="preserve">
         <value>Provided organization Invalid</value>
     </data>
+    <data name="INVALID_DEPARTMENT" xml:space="preserve">
+        <value>Provided department Invalid</value>
+    </data>
 </root>

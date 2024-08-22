@@ -27,6 +27,7 @@ public static class Constants
             public const string DataNotFound = "DATA_NOT_FOUND";
             public const string InternalServerError = "INTERNAL_ERROR";
             public const string InvalidOrganization = "INVALID_ORGANIZATION";
+            public const string InvalidDepartment = "INVALID_DEPARTMENT";
         }
 
         #endregion
@@ -55,6 +56,7 @@ public static class Constants
     }
 
     #endregion
+    
     #region Files
 
     public static class Files

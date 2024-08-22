@@ -11,17 +11,15 @@ namespace Staff.Application.Models.Request.Organization
         [Required(ErrorMessage = "Department name is required")]
         public required string Name { get; set; }
 
-        public Department MapToEntity(DepartmentRequestDto departmentRequestDto, OrganizationDetails organizationDetails,
-            int status)
+        public Department MapToEntity(DepartmentRequestDto departmentRequestDto, int status)
         {
             return new Department()
             {
                 Id = 0,
-                OrganizationDetails = organizationDetails,
+                OrganizationId = departmentRequestDto.Organization,
                 Name = departmentRequestDto.Name,
                 Status = status
             };
         }
     }
-    
 }

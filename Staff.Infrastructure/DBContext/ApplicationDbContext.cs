@@ -9,11 +9,9 @@ namespace Staff.Infrastructure.DBContext;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
     : DbContext(options)
 {
-    private readonly IConfiguration _configuration = configuration;
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
+        optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
     }
 
     public DbSet<OrganizationDetails> Organization { get; set; }
@@ -25,9 +23,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Leave> Leave { get; set; }
     public DbSet<LeaveType> LeaveType { get; set; }
     public DbSet<LeaveStatus> LeaveStatus { get; set; }
-    public DbSet<Payroll> Payroll  { get; set; }
-    public DbSet<PerformanceReview> PerformanceReview  { get; set; }
-    public DbSet<Salary> Salary  { get; set; }
-    public DbSet<SalaryUpdateLog> SalaryUpdateLog  { get; set; }
-    public DbSet<Tax> Tax  { get; set; }
+    public DbSet<Payroll> Payroll { get; set; }
+    public DbSet<PerformanceReview> PerformanceReview { get; set; }
+    public DbSet<Salary> Salary { get; set; }
+    public DbSet<SalaryUpdateLog> SalaryUpdateLog { get; set; }
+    public DbSet<Tax> Tax { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Department>()
+            .HasOne<OrganizationDetails>(d => d.OrganizationDetails)
+            .WithMany(o => o.Departments)
+            .HasForeignKey(d => d.OrganizationId);
+    }
 }

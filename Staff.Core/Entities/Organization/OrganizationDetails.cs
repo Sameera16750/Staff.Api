@@ -12,12 +12,12 @@ namespace Staff.Core.Entities.Organization
 
         [Required] public string Address { get; set; }
 
-        [Required] public string ContactNo { get; set; } 
+        [Required] public string ContactNo { get; set; }
 
-        [Required] public string Email { get; set; } 
+        [Required] public string Email { get; set; }
 
-        [Required]
-        public int Status { get; set; }
-    }    
+        [Required] public int Status { get; set; }
+
+        public ICollection<Department>? Departments { get; set; } = null;
+    }
 }
-

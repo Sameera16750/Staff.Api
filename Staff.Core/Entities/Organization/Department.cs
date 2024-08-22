@@ -10,11 +10,15 @@ namespace Staff.Core.Entities.Organization
         public long Id { get; set; } 
 
         [Required]
-        public required OrganizationDetails OrganizationDetails { get; set; }
+        public required long OrganizationId { get; set; }
 
         [Required]
         public required string Name { get; set; }
 
+
         public int Status {get; set;}
+        
+        // navigator property
+        public OrganizationDetails? OrganizationDetails { get; set; } = null;
     }
 }
