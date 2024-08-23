@@ -11,6 +11,7 @@ namespace Staff.Infrastructure.Repositories.Implementations.Organization;
 public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRepo> logger)
     : IDepartmentRepo
 {
+    #region POST Methods
     public async Task<long> SaveDepartment(Department department)
     {
         logger.LogInformation("Saving department ...");
@@ -25,11 +26,16 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
         return department.Id;
     }
 
+    #endregion
+
+    #region GET Methods
+
     public async Task<Department?> GetDepartment(long id, int status)
     {
         logger.LogInformation("Getting department ...");
         var result = await context.Department.Include(d => d.OrganizationDetails)
-            .FirstOrDefaultAsync(d => (d.Id == id) && (d.Status == status));
+            .FirstOrDefaultAsync(d =>
+                (d.Id == id) && (d.Status == status) && (d.OrganizationDetails!.Status == Constants.Status.Active));
         if (result == null)
         {
             logger.LogWarning("Department not found.");
@@ -60,6 +66,10 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
         return null;
     }
 
+    #endregion
+
+    #region PUT Methods
+
     public async Task<long> UpdateDepartment(Department department)
     {
         logger.LogInformation("Checking available department ...");
@@ -84,4 +94,38 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
 
         return department.Id;
     }
+
+    #endregion
+
+    #region DELETE Methods
+
+    public async Task<long> DeleteDepartment(long id)
+    {
+        logger.LogInformation("Checking available department ...");
+        var existing =
+            await context.Department.FirstOrDefaultAsync(d =>
+                (d.Id == id) && (d.Status != Constants.Status.Deleted));
+        if (existing == null)
+        {
+            logger.LogWarning("Department not found.");
+            return Constants.ProcessStatus.NotFound;
+        }
+
+        logger.LogInformation("Updating department ...");
+        var deleted = existing;
+        deleted.Status = Constants.Status.Deleted;
+
+        context.Entry(existing).CurrentValues.SetValues(deleted);
+        context.Entry(existing).State = EntityState.Modified;
+        var result = await context.SaveChangesAsync();
+        if (result < 1)
+        {
+            logger.LogWarning("Department update failed.");
+            return Constants.ProcessStatus.Failed;
+        }
+
+        return existing.Id;
+    }
+
+    #endregion
 }

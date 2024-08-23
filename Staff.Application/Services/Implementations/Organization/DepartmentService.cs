@@ -17,6 +17,8 @@ public class DepartmentService(
     IResponseHelper responseHelper)
     : IDepartmentService
 {
+    #region POST Methods
+
     public async Task<ResponseWithCode<dynamic>> SaveDepartment(DepartmentRequestDto requestDto)
     {
         try
@@ -43,6 +45,10 @@ public class DepartmentService(
             return responseHelper.InternalServerErrorResponse();
         }
     }
+
+    #endregion
+
+    #region GET Methods
 
     public async Task<ResponseWithCode<dynamic>> GetDepartment(long id)
     {
@@ -93,6 +99,10 @@ public class DepartmentService(
         }
     }
 
+    #endregion
+
+    #region PUT Methods
+
     public async Task<ResponseWithCode<dynamic>> UpdateDepartment(DepartmentRequestDto requestDto, long id)
     {
         try
@@ -127,4 +137,34 @@ public class DepartmentService(
             return responseHelper.InternalServerErrorResponse();
         }
     }
+
+    #endregion
+
+    #region DELETE Methods
+
+    public async Task<ResponseWithCode<dynamic>> DeleteDepartment(long id)
+    {
+        try
+        {
+            var result = await departmentRepo.DeleteDepartment(id);
+            if (result == Constants.ProcessStatus.NotFound)
+            {
+                return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
+            }
+
+            if (result == Constants.ProcessStatus.Failed)
+            {
+                return responseHelper.DeleteFailedErrorResponse();
+            }
+
+            return responseHelper.DeleteSuccessResponse(result);
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
 }

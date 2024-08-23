@@ -11,6 +11,8 @@ namespace Staff.Infrastructure.Repositories.Implementations.Organization;
 public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<IOrganizationDetailRepo> logger)
     : IOrganizationDetailRepo
 {
+    #region POST Methods
+
     public async Task<long> SaveOrganization(OrganizationDetails organizationDetails)
     {
         logger.LogInformation("Saving company");
@@ -26,30 +28,9 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
         return organizationDetails.Id;
     }
 
-    public async Task<long> UpdateOrganization(OrganizationDetails organizationDetails)
-    {
-        logger.LogInformation("Checking available organization");
-        var existing = await context.Organization.FirstOrDefaultAsync(o =>
-            (o.Id == organizationDetails.Id && o.Status == Constants.Status.Active));
-        if (existing == null)
-        {
-            logger.LogError("Organization doesn't exist");
-            return 0;
-        }
+    #endregion
 
-        logger.LogInformation("Updating Organization");
-        context.Entry(existing).CurrentValues.SetValues(organizationDetails);
-        context.Entry(existing).State = EntityState.Modified;
-        var result = await context.SaveChangesAsync();
-        if (result < 1)
-        {
-            logger.LogError("Organization updating failed");
-            return 0;
-        }
-
-        logger.LogInformation("Organization updating Success");
-        return organizationDetails.Id;
-    }
+    #region GET Methods
 
     public async Task<OrganizationDetails?> GetDetails(long id, int status)
     {
@@ -86,4 +67,35 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 
         return response;
     }
+
+    #endregion
+
+    #region PUT Methods
+
+    public async Task<long> UpdateOrganization(OrganizationDetails organizationDetails)
+    {
+        logger.LogInformation("Checking available organization");
+        var existing = await context.Organization.FirstOrDefaultAsync(o =>
+            (o.Id == organizationDetails.Id && o.Status == Constants.Status.Active));
+        if (existing == null)
+        {
+            logger.LogError("Organization doesn't exist");
+            return 0;
+        }
+
+        logger.LogInformation("Updating Organization");
+        context.Entry(existing).CurrentValues.SetValues(organizationDetails);
+        context.Entry(existing).State = EntityState.Modified;
+        var result = await context.SaveChangesAsync();
+        if (result < 1)
+        {
+            logger.LogError("Organization updating failed");
+            return 0;
+        }
+
+        logger.LogInformation("Organization updating Success");
+        return organizationDetails.Id;
+    }
+
+    #endregion
 }

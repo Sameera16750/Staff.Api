@@ -16,6 +16,8 @@ namespace Staff.Application.Services.Implementations.Organization
         ILogger<IOrganizationDetailService> logger,
         IResponseHelper responseHelper) : IOrganizationDetailService
     {
+        #region POST Methods
+
         public async Task<ResponseWithCode<dynamic>> SaveOrganization(OrganizationRequestDto organization)
         {
             try
@@ -37,6 +39,10 @@ namespace Staff.Application.Services.Implementations.Organization
                 return responseHelper.InternalServerErrorResponse();
             }
         }
+
+        #endregion
+
+        #region GET Methods
 
         public async Task<ResponseWithCode<dynamic>> GetOrganizationById(long id, int status)
         {
@@ -89,6 +95,10 @@ namespace Staff.Application.Services.Implementations.Organization
             }
         }
 
+        #endregion
+
+        #region PUT Methods
+
         public async Task<ResponseWithCode<dynamic>> UpdateOrganization(OrganizationRequestDto organization, long id)
         {
             try
@@ -111,6 +121,10 @@ namespace Staff.Application.Services.Implementations.Organization
                 return responseHelper.InternalServerErrorResponse();
             }
         }
+
+        #endregion
+
+        #region DELETE Methods
 
         public async Task<ResponseWithCode<dynamic>> DeleteOrganization(long id)
         {
@@ -138,5 +152,7 @@ namespace Staff.Application.Services.Implementations.Organization
                 return responseHelper.InternalServerErrorResponse();
             }
         }
+
+        #endregion
     }
 }

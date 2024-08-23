@@ -12,6 +12,8 @@ namespace Staff.Api.Controllers.Organization
     [ApiController]
     public class Department(IDepartmentService departmentService) : ControllerBase
     {
+        #region POST Methods
+
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
@@ -21,6 +23,10 @@ namespace Staff.Api.Controllers.Organization
             var result = await departmentService.SaveDepartment(requestDto);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
+
+        #endregion
+
+        #region GET Methods
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DepartmentResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
@@ -49,6 +55,10 @@ namespace Staff.Api.Controllers.Organization
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
+        #endregion
+
+        #region PUT Methods
+
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
@@ -58,5 +68,21 @@ namespace Staff.Api.Controllers.Organization
             var result = await departmentService.UpdateDepartment(requestDto, id);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
+
+        #endregion
+
+        #region DELETE Methods
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDepartment(long id)
+        {
+            var results = await departmentService.DeleteDepartment(id);
+            return new ObjectResult(results.Response) { StatusCode = (int)results.StatusCode };
+        }
+
+        #endregion
     }
 }

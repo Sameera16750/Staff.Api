@@ -12,7 +12,7 @@ namespace Staff.Api.Controllers.Organization
     [ApiController]
     public class Organization(IOrganizationDetailService organizationDetailService) : ControllerBase
     {
-        #region Organization
+        #region POST Methods
 
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
@@ -23,16 +23,19 @@ namespace Staff.Api.Controllers.Organization
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
+        #endregion
+
+        #region GET Methods
+
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrganizationDetailsResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrganizationById(long id)
         {
-            var response = await organizationDetailService.GetOrganizationById(id,Constants.Status.Active);
+            var response = await organizationDetailService.GetOrganizationById(id, Constants.Status.Active);
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
-
 
         [ProducesResponseType(StatusCodes.Status200OK,
             Type = typeof(PaginatedListResponseDto<OrganizationDetailsResponseDto>))]
@@ -43,9 +46,13 @@ namespace Staff.Api.Controllers.Organization
             var result = await organizationDetailService.GetAllOrganizations(
                 pageNumber: query.PageNumber,
                 pageSize: query.PageSize,
-                search: query.SearchTerm,Constants.Status.Active);
+                search: query.SearchTerm, Constants.Status.Active);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
+
+        #endregion
+
+        #region PUT Methods
 
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
@@ -57,13 +64,17 @@ namespace Staff.Api.Controllers.Organization
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
+        #endregion
+
+        #region DELETE Methods
+
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrganization(long id)
         {
-            var response = await organizationDetailService.DeleteOrganization( id);
+            var response = await organizationDetailService.DeleteOrganization(id);
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
