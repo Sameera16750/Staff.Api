@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
+using Staff.Core.Constants;
 
 namespace Staff.Api.Controllers.Organization
 {
@@ -27,6 +29,23 @@ namespace Staff.Api.Controllers.Organization
         public async Task<IActionResult> GetDepartments(long id)
         {
             var result = await departmentService.GetDepartment(id);
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<DepartmentResponseDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpGet("list")]
+        public async Task<IActionResult> GetAllDepartments([FromQuery] PaginatedListRequestDto query,
+            [FromQuery] long organisationId)
+        {
+            var result = await departmentService.GetAllDepartments(
+                search: query.SearchTerm,
+                pageNumber: query.PageNumber,
+                pageSize: query.PageSize,
+                organization: organisationId,
+                departmentStatus: Constants.Status.Active,
+                organizationStatus: Constants.Status.Active
+            );
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

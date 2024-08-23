@@ -64,6 +64,35 @@ public class DepartmentService(
         }
     }
 
+    public async Task<ResponseWithCode<dynamic>> GetAllDepartments(string search, int pageNumber, int pageSize,
+        int departmentStatus, long organization, int organizationStatus)
+    {
+        try
+        {
+            logger.LogInformation("search departments processing ...");
+            var result = await departmentRepo.GetAllDepartments(search, pageNumber, pageSize, departmentStatus,
+                organization, organizationStatus);
+            var response = new PaginatedListResponseDto<DepartmentResponseDto>();
+            if (result != null)
+            {
+                response = response.ToPaginatedListResponse(
+                    result,
+                    new DepartmentResponseDto().MapToResponseList(result.Items)
+                );
+            }
+
+            return responseHelper.CreateResponseWithCode<dynamic>(
+                HttpStatusCode.OK,
+                response
+            );
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
     public async Task<ResponseWithCode<dynamic>> UpdateDepartment(DepartmentRequestDto requestDto, long id)
     {
         try

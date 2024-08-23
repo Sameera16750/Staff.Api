@@ -57,8 +57,6 @@ namespace Staff.Api.Controllers.Organization
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
-        #endregion
-        
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
@@ -68,6 +66,7 @@ namespace Staff.Api.Controllers.Organization
             var response = await organizationDetailService.DeleteOrganization( id);
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
-        
+
+        #endregion
     }
 }

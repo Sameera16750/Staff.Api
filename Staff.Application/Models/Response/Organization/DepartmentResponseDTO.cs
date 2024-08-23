@@ -19,4 +19,9 @@ public class DepartmentResponseDto
             OrganizationName = department.OrganizationDetails!.Name
         };
     }
+    
+    public List<DepartmentResponseDto> MapToResponseList(List<Department> list)
+    {
+        return list.Select(MapToResponse).ToList();
+    }
 }
