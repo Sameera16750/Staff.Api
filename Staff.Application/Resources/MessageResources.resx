@@ -48,4 +48,10 @@
     <data name="INVALID_DEPARTMENT" xml:space="preserve">
         <value>Provided department Invalid</value>
     </data>
+    <data name="DESIGNATION_EXISTS" xml:space="preserve">
+        <value>Designation name already taken</value>
+    </data>
+    <data name="DEPARTMENT_EXISTS" xml:space="preserve">
+        <value>Department name already taken</value>
+    </data>
 </root>

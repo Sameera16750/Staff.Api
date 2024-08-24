@@ -10,6 +10,7 @@ public static class InfrastructureDiConfigs
     {
         services.AddScoped<IOrganizationDetailRepo, OrganizationDetailDetailRepo>();
         services.AddScoped<IDepartmentRepo, DepartmentRepo>();
+        services.AddScoped<IDesignationRepo, DesignationRepo>();
         return services;
     }
 }

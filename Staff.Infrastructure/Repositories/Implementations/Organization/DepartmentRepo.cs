@@ -12,18 +12,25 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
     : IDepartmentRepo
 {
     #region POST Methods
+
     public async Task<long> SaveDepartment(Department department)
     {
+        logger.LogInformation("Checking available departments");
+        var existing = await context.Department.FirstOrDefaultAsync(d =>
+            (d.OrganizationId == department.OrganizationId && d.Name.Equals(department.Name) &&
+             d.Status == Constants.Status.Active));
+        if (existing != null)
+        {
+            logger.LogWarning($"Designation {department.Name} already exists");
+            return Constants.ProcessStatus.AlreadyExists;
+        }
         logger.LogInformation("Saving department ...");
         context.Department.Add(department);
         var result = await context.SaveChangesAsync();
-        if (result < 1)
-        {
-            logger.LogInformation("Department saving failed.");
-            return Constants.ProcessStatus.Failed;
-        }
+        if (result >= 1) return department.Id;
+        logger.LogError("Department saving failed.");
+        return Constants.ProcessStatus.Failed;
 
-        return department.Id;
     }
 
     #endregion

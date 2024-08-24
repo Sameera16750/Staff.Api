@@ -16,6 +16,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<OrganizationDetails> Organization { get; set; }
     public DbSet<Department> Department { get; set; }
+    public DbSet<Designation> Designation { get; set; }
     public DbSet<StaffMember> StaffMember { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
     public DbSet<Bonus> Bonus { get; set; }

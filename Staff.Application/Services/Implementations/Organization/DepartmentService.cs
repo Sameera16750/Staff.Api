@@ -25,19 +25,14 @@ public class DepartmentService(
         {
             logger.LogInformation("Saving department");
             var org = await organizationDetailRepo.GetDetails(requestDto.Organization, Constants.Status.Active);
-            if (org != null)
-            {
-                var department = requestDto.MapToEntity(requestDto, Constants.Status.Active);
-                var result = await departmentRepo.SaveDepartment(department);
-                if (result > 0)
-                {
-                    return responseHelper.SaveSuccessResponse(result);
-                }
-
-                return responseHelper.SaveFailedResponse();
-            }
-
-            return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
+            if (org == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
+            var department = requestDto.MapToEntity(requestDto, Constants.Status.Active);
+            var result = await departmentRepo.SaveDepartment(department);
+            return result == Constants.ProcessStatus.AlreadyExists
+                ? responseHelper.BadRequest(Constants.Messages.Error.DepartmentExist)
+                : result == Constants.ProcessStatus.Failed
+                    ? responseHelper.SaveFailedResponse()
+                    : responseHelper.SaveSuccessResponse(result);
         }
         catch (Exception e)
         {

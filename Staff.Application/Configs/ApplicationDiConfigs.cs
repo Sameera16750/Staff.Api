@@ -14,6 +14,7 @@ public static class ApplicationDiConfigs
         services.AddScoped<IMessageResourceHelper, ResourceHelper.MessageResourceHelper>();
         services.AddScoped<IOrganizationDetailService, OrganizationDetailService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
+        services.AddScoped<IDesignationService, DesignationService>();
         return services;
     }
 }

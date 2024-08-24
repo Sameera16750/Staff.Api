@@ -28,6 +28,9 @@ public static class Constants
             public const string InternalServerError = "INTERNAL_ERROR";
             public const string InvalidOrganization = "INVALID_ORGANIZATION";
             public const string InvalidDepartment = "INVALID_DEPARTMENT";
+            public const string DepartmentExist = "DEPARTMENT_EXISTS";
+            public const string InvalidDesignation = "INVALID_DESIGNATION";
+            public const string DesignationExists = "DESIGNATION_EXISTS";
         }
 
         #endregion
@@ -53,6 +56,7 @@ public static class Constants
         public static readonly int Success = 1;
         public static readonly int Failed= 0;
         public static readonly int NotFound = -1;
+        public static readonly int AlreadyExists = -2;
     }
 
     #endregion
