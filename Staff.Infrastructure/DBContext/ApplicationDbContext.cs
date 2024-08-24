@@ -35,5 +35,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne<OrganizationDetails>(d => d.OrganizationDetails)
             .WithMany(o => o.Departments)
             .HasForeignKey(d => d.OrganizationId);
+
+        modelBuilder.Entity<Designation>()
+            .HasOne<Department>(d => d.Department)
+            .WithMany(d => d.Designations)
+            .HasForeignKey(d => d.DepartmentId);
+
+        modelBuilder.Entity<StaffMember>()
+            .HasOne<Designation>(s => s.Designation)
+            .WithMany(d => d.StaffMembers)
+            .HasForeignKey(s => s.DesignationId);
     }
 }

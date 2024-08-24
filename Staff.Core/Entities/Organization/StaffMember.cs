@@ -10,28 +10,27 @@ public class StaffMember {
     public long Id { get; set; }
 
     [Required] 
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 
-    public string LastName { get; set; } 
-
-    [Required] 
-    public DateTime Birthday { get; set; }
+    public string? LastName { get; set; } 
 
     [Required] 
-    public string Address { get; set; }
+    public required DateTime Birthday { get; set; }
 
     [Required] 
-    public string ContactNumber { get; set; }
+    public required string Address { get; set; } =string.Empty;
 
     [Required] 
-    public string Email { get; set; } 
+    public required string ContactNumber { get; set; } =string.Empty;
 
     [Required] 
-    public Department Department { get; set; }
+    public string? Email { get; set; } 
 
-    [Required] 
-    public Role Role { get; set; } 
-
-    [Required] 
-    public OrganizationDetails OrganizationDetails { get; set; }
+    [Required]
+    public long DesignationId { get; set; }
+    
+    public Designation? Designation { get; set; } 
+    
+    [Required] public required int Status { get; set; }
+    
 }
