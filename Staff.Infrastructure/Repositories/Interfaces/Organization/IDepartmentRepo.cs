@@ -7,28 +7,30 @@ public interface IDepartmentRepo
 {
     #region POST Methods
     
-    Task<long> SaveDepartment(Department department);
+    Task<long> SaveDepartmentAsync(Department department);
 
     #endregion
 
     #region GET Methods
 
-    Task<Department?> GetDepartment(long id, int status);
+    Task<Department?> GetDepartmentByNameAsync(string name, long organization, int status);
+    
+    Task<Department?> GetDepartmentAsync(long id, int status);
 
-    Task<PaginatedListDto<Department>?> GetAllDepartments(string search, int pageNumber, int pageSize,
+    Task<PaginatedListDto<Department>?> GetAllDepartmentsAsync(string search, int pageNumber, int pageSize,
         int departmentStatus, long organization, int organizationStatus);
 
     #endregion
 
     #region PUT Methods
 
-    Task<long> UpdateDepartment(Department department);
+    Task<long> UpdateDepartmentAsync(Department department);
 
     #endregion
 
     #region DELETE Methods
 
-    Task<long> DeleteDepartment(long id);
+    Task<long> DeleteDepartmentAsync(long id);
 
     #endregion
 }

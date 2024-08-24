@@ -7,7 +7,7 @@ public interface IDesignationService
 {
     #region POST Methods
 
-    Task<ResponseWithCode<dynamic>> SaveDesignation(DesignationRequestDto request);
+    Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request);
 
     #endregion
 }

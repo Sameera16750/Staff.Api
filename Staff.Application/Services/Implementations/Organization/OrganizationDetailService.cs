@@ -18,14 +18,14 @@ namespace Staff.Application.Services.Implementations.Organization
     {
         #region POST Methods
 
-        public async Task<ResponseWithCode<dynamic>> SaveOrganization(OrganizationRequestDto organization)
+        public async Task<ResponseWithCode<dynamic>> SaveOrganizationAsync(OrganizationRequestDto organization)
         {
             try
             {
                 logger.LogInformation("Save organization processing..");
 
                 OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
-                var result = await organizationDetailRepo.SaveOrganization(newOrganization);
+                var result = await organizationDetailRepo.SaveOrganizationAsync(newOrganization);
                 if (result > 0)
                 {
                     return responseHelper.SaveSuccessResponse(result);
@@ -44,12 +44,12 @@ namespace Staff.Application.Services.Implementations.Organization
 
         #region GET Methods
 
-        public async Task<ResponseWithCode<dynamic>> GetOrganizationById(long id, int status)
+        public async Task<ResponseWithCode<dynamic>> GetOrganizationByIdAsync(long id, int status)
         {
             try
             {
                 logger.LogInformation("Find organization processing..");
-                var result = await organizationDetailRepo.GetDetails(id, status);
+                var result = await organizationDetailRepo.GetDetailsAsync(id, status);
 
                 if (result != null)
                 {
@@ -66,13 +66,13 @@ namespace Staff.Application.Services.Implementations.Organization
             }
         }
 
-        public async Task<ResponseWithCode<dynamic>> GetAllOrganizations(int pageNumber, int pageSize, string search,
+        public async Task<ResponseWithCode<dynamic>> GetAllOrganizationsAsync(int pageNumber, int pageSize, string search,
             int status)
         {
             try
             {
                 logger.LogInformation("Search organizations processing..");
-                var result = await organizationDetailRepo.GetAllOrganizations(search: search, pageNumber: pageNumber,
+                var result = await organizationDetailRepo.GetAllOrganizationsAsync(search: search, pageNumber: pageNumber,
                     pageSize: pageSize, status: status);
                 var response = new PaginatedListResponseDto<OrganizationDetailsResponseDto>();
                 if (result != null)
@@ -99,7 +99,7 @@ namespace Staff.Application.Services.Implementations.Organization
 
         #region PUT Methods
 
-        public async Task<ResponseWithCode<dynamic>> UpdateOrganization(OrganizationRequestDto organization, long id)
+        public async Task<ResponseWithCode<dynamic>> UpdateOrganizationAsync(OrganizationRequestDto organization, long id)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace Staff.Application.Services.Implementations.Organization
 
                 OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
                 newOrganization.Id = id;
-                var result = await organizationDetailRepo.UpdateOrganization(newOrganization);
+                var result = await organizationDetailRepo.UpdateOrganizationAsync(newOrganization);
                 if (result > 0)
                 {
                     return responseHelper.UpdateSuccessResponse(result);
@@ -126,16 +126,16 @@ namespace Staff.Application.Services.Implementations.Organization
 
         #region DELETE Methods
 
-        public async Task<ResponseWithCode<dynamic>> DeleteOrganization(long id)
+        public async Task<ResponseWithCode<dynamic>> DeleteOrganizationAsync(long id)
         {
             try
             {
                 logger.LogInformation("Delete organization processing..");
-                var org = await organizationDetailRepo.GetDetails(id, Constants.Status.Active);
+                var org = await organizationDetailRepo.GetDetailsAsync(id, Constants.Status.Active);
                 if (org != null && org.Status != Constants.Status.Deleted)
                 {
                     org.Status = Constants.Status.Deleted;
-                    var result = await organizationDetailRepo.UpdateOrganization(org);
+                    var result = await organizationDetailRepo.UpdateOrganizationAsync(org);
                     if (result < 1)
                     {
                         return responseHelper.DeleteFailedErrorResponse();

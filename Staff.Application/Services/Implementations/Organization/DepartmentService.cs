@@ -19,20 +19,21 @@ public class DepartmentService(
 {
     #region POST Methods
 
-    public async Task<ResponseWithCode<dynamic>> SaveDepartment(DepartmentRequestDto requestDto)
+    public async Task<ResponseWithCode<dynamic>> SaveDepartmentAsync(DepartmentRequestDto requestDto)
     {
         try
         {
             logger.LogInformation("Saving department");
-            var org = await organizationDetailRepo.GetDetails(requestDto.Organization, Constants.Status.Active);
+            var org = await organizationDetailRepo.GetDetailsAsync(requestDto.Organization, Constants.Status.Active);
             if (org == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
+            var existingDepartment = await departmentRepo
+                .GetDepartmentByNameAsync(requestDto.Name, requestDto.Organization, Constants.Status.Active);
+            if (existingDepartment == null) return responseHelper.BadRequest(Constants.Messages.Error.DepartmentExist);
             var department = requestDto.MapToEntity(requestDto, Constants.Status.Active);
-            var result = await departmentRepo.SaveDepartment(department);
-            return result == Constants.ProcessStatus.AlreadyExists
-                ? responseHelper.BadRequest(Constants.Messages.Error.DepartmentExist)
-                : result == Constants.ProcessStatus.Failed
-                    ? responseHelper.SaveFailedResponse()
-                    : responseHelper.SaveSuccessResponse(result);
+            var result = await departmentRepo.SaveDepartmentAsync(department);
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.SaveFailedResponse()
+                : responseHelper.SaveSuccessResponse(result);
         }
         catch (Exception e)
         {
@@ -45,18 +46,14 @@ public class DepartmentService(
 
     #region GET Methods
 
-    public async Task<ResponseWithCode<dynamic>> GetDepartment(long id)
+    public async Task<ResponseWithCode<dynamic>> GetDepartmentAsync(long id)
     {
         try
         {
-            var department = await departmentRepo.GetDepartment(id, Constants.Status.Active);
-            if (department != null)
-            {
-                var response = new DepartmentResponseDto().MapToResponse(department);
-                return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
-            }
-
-            return responseHelper.NotFoundErrorResponse();
+            var department = await departmentRepo.GetDepartmentAsync(id, Constants.Status.Active);
+            if (department == null) return responseHelper.NotFoundErrorResponse();
+            var response = new DepartmentResponseDto().MapToResponse(department);
+            return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
         }
         catch (Exception e)
         {
@@ -65,13 +62,13 @@ public class DepartmentService(
         }
     }
 
-    public async Task<ResponseWithCode<dynamic>> GetAllDepartments(string search, int pageNumber, int pageSize,
+    public async Task<ResponseWithCode<dynamic>> GetAllDepartmentsAsync(string search, int pageNumber, int pageSize,
         int departmentStatus, long organization, int organizationStatus)
     {
         try
         {
             logger.LogInformation("search departments processing ...");
-            var result = await departmentRepo.GetAllDepartments(search, pageNumber, pageSize, departmentStatus,
+            var result = await departmentRepo.GetAllDepartmentsAsync(search, pageNumber, pageSize, departmentStatus,
                 organization, organizationStatus);
             var response = new PaginatedListResponseDto<DepartmentResponseDto>();
             if (result != null)
@@ -98,13 +95,13 @@ public class DepartmentService(
 
     #region PUT Methods
 
-    public async Task<ResponseWithCode<dynamic>> UpdateDepartment(DepartmentRequestDto requestDto, long id)
+    public async Task<ResponseWithCode<dynamic>> UpdateDepartmentAsync(DepartmentRequestDto requestDto, long id)
     {
         try
         {
             logger.LogInformation("Updating department");
             var organization =
-                await organizationDetailRepo.GetDetails(requestDto.Organization, Constants.Status.Active);
+                await organizationDetailRepo.GetDetailsAsync(requestDto.Organization, Constants.Status.Active);
             if (organization == null)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
@@ -113,18 +110,15 @@ public class DepartmentService(
             var department = requestDto.MapToEntity(requestDto, Constants.Status.Active);
             department.Id = id;
             var result =
-                await departmentRepo.UpdateDepartment(department);
+                await departmentRepo.UpdateDepartmentAsync(department);
             if (result == Constants.ProcessStatus.NotFound)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
             }
 
-            if (result == Constants.ProcessStatus.Failed)
-            {
-                return responseHelper.UpdateFailedResponse();
-            }
-
-            return responseHelper.UpdateSuccessResponse(result);
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.UpdateFailedResponse()
+                : responseHelper.UpdateSuccessResponse(result);
         }
         catch (Exception e)
         {
@@ -137,22 +131,19 @@ public class DepartmentService(
 
     #region DELETE Methods
 
-    public async Task<ResponseWithCode<dynamic>> DeleteDepartment(long id)
+    public async Task<ResponseWithCode<dynamic>> DeleteDepartmentAsync(long id)
     {
         try
         {
-            var result = await departmentRepo.DeleteDepartment(id);
+            var result = await departmentRepo.DeleteDepartmentAsync(id);
             if (result == Constants.ProcessStatus.NotFound)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
             }
 
-            if (result == Constants.ProcessStatus.Failed)
-            {
-                return responseHelper.DeleteFailedErrorResponse();
-            }
-
-            return responseHelper.DeleteSuccessResponse(result);
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.DeleteFailedErrorResponse()
+                : responseHelper.DeleteSuccessResponse(result);
         }
         catch (Exception e)
         {

@@ -6,7 +6,13 @@ public interface IDesignationRepo
 {
     #region POST Methids
 
-    Task<long> SaveDesignation(Designation designation);
+    Task<long> SaveDesignationAsync(Designation designation);
+
+    #endregion
+
+    #region GET Methods
+
+    Task<Designation?> GetDesignationByNameAsync(string name, long department, int status);
 
     #endregion
 }

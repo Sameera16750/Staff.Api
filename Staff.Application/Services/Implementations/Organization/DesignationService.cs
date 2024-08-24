@@ -17,19 +17,21 @@ public class DesignationService(
 {
     #region POST Methods
 
-    public async Task<ResponseWithCode<dynamic>> SaveDesignation(DesignationRequestDto request)
+    public async Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request)
     {
         try
         {
             logger.LogInformation("Save designation processing ...");
-            var department = await departmentRepo.GetDepartment(request.DepartmentId, Constants.Status.Active);
+            var department = await departmentRepo.GetDepartmentAsync(request.DepartmentId, Constants.Status.Active);
             if (department == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
-            var result = await designationRepo.SaveDesignation(request.MapToEntity(request, Constants.Status.Active));
-            return result == Constants.ProcessStatus.AlreadyExists
-                ? responseHelper.BadRequest(Constants.Messages.Error.DesignationExists)
-                : result == Constants.ProcessStatus.Failed
-                    ? responseHelper.SaveFailedResponse()
-                    : responseHelper.SaveSuccessResponse(result);
+            var designation =
+                await designationRepo.GetDesignationByNameAsync(request.Name, request.DepartmentId,
+                    Constants.Status.Active);
+            if (designation != null) return responseHelper.BadRequest(Constants.Messages.Error.DesignationExists);
+            var result = await designationRepo.SaveDesignationAsync(request.MapToEntity(request, Constants.Status.Active));
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.SaveFailedResponse()
+                : responseHelper.SaveSuccessResponse(result);
         }
         catch (Exception e)
         {

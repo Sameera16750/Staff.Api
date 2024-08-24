@@ -7,26 +7,26 @@ public interface IOrganizationDetailService
 {
     #region POST Methods
 
-    Task<ResponseWithCode<dynamic>> SaveOrganization(OrganizationRequestDto organization);
+    Task<ResponseWithCode<dynamic>> SaveOrganizationAsync(OrganizationRequestDto organization);
 
     #endregion
 
     #region GET Methods
 
-    Task<ResponseWithCode<dynamic>> GetOrganizationById(long id, int status);
-    Task<ResponseWithCode<dynamic>> GetAllOrganizations(int pageNumber, int pageSize, string search, int status);
+    Task<ResponseWithCode<dynamic>> GetOrganizationByIdAsync(long id, int status);
+    Task<ResponseWithCode<dynamic>> GetAllOrganizationsAsync(int pageNumber, int pageSize, string search, int status);
 
     #endregion
 
     #region PUT Methods
 
-    Task<ResponseWithCode<dynamic>> UpdateOrganization(OrganizationRequestDto organization, long id);
+    Task<ResponseWithCode<dynamic>> UpdateOrganizationAsync(OrganizationRequestDto organization, long id);
 
     #endregion
 
     #region DELETE Methods
 
-    Task<ResponseWithCode<dynamic>> DeleteOrganization(long id);
+    Task<ResponseWithCode<dynamic>> DeleteOrganizationAsync(long id);
 
     #endregion
 }

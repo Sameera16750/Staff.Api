@@ -11,18 +11,8 @@ public class DesignationRepo(ApplicationDbContext context, ILogger<IDesignationR
 {
     #region POST Methods
 
-    public async Task<long> SaveDesignation(Designation designation)
+    public async Task<long> SaveDesignationAsync(Designation designation)
     {
-        logger.LogInformation("Checking available designations");
-        var existing = await context.Designation.FirstOrDefaultAsync(d =>
-            (d.DepartmentId == designation.DepartmentId && d.Name.Equals(designation.Name) &&
-             d.Status == Constants.Status.Active));
-        if (existing != null)
-        {
-            logger.LogWarning($"Designation {designation.Name} already exists");
-            return Constants.ProcessStatus.AlreadyExists;
-        }
-
         logger.LogInformation("Saving designation..");
         context.Designation.Add(designation);
         var result = await context.SaveChangesAsync();
@@ -33,6 +23,24 @@ public class DesignationRepo(ApplicationDbContext context, ILogger<IDesignationR
         }
 
         return designation.Id;
+    }
+
+    #endregion
+
+    #region GET Methods
+
+    public async Task<Designation?> GetDesignationByNameAsync(string name, long department, int status)
+    {
+        logger.LogInformation("Checking available designations");
+        var existing = await context.Designation.FirstOrDefaultAsync(d =>
+            (d.DepartmentId == department && d.Name.Equals(name) &&
+             d.Status == status));
+        if (existing != null)
+        {
+            logger.LogWarning($"Designation {name} already exists");
+        }
+
+        return existing;
     }
 
     #endregion

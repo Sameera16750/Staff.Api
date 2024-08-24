@@ -13,31 +13,35 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
 {
     #region POST Methods
 
-    public async Task<long> SaveDepartment(Department department)
+    public async Task<long> SaveDepartmentAsync(Department department)
     {
-        logger.LogInformation("Checking available departments");
-        var existing = await context.Department.FirstOrDefaultAsync(d =>
-            (d.OrganizationId == department.OrganizationId && d.Name.Equals(department.Name) &&
-             d.Status == Constants.Status.Active));
-        if (existing != null)
-        {
-            logger.LogWarning($"Designation {department.Name} already exists");
-            return Constants.ProcessStatus.AlreadyExists;
-        }
         logger.LogInformation("Saving department ...");
         context.Department.Add(department);
         var result = await context.SaveChangesAsync();
         if (result >= 1) return department.Id;
         logger.LogError("Department saving failed.");
         return Constants.ProcessStatus.Failed;
-
     }
 
     #endregion
 
     #region GET Methods
 
-    public async Task<Department?> GetDepartment(long id, int status)
+    public async Task<Department?> GetDepartmentByNameAsync(string name, long organization, int status)
+    {
+        logger.LogInformation("Checking available departments");
+        var existing = await context.Department.FirstOrDefaultAsync(d =>
+            (d.OrganizationId == organization && d.Name.Equals(name) &&
+             d.Status == status));
+        if (existing == null)
+        {
+            logger.LogWarning($"Designation {name} not exists");
+        }
+
+        return existing;
+    }
+
+    public async Task<Department?> GetDepartmentAsync(long id, int status)
     {
         logger.LogInformation("Getting department ...");
         var result = await context.Department.Include(d => d.OrganizationDetails)
@@ -51,7 +55,7 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
         return result;
     }
 
-    public async Task<PaginatedListDto<Department>?> GetAllDepartments(string search, int pageNumber, int pageSize,
+    public async Task<PaginatedListDto<Department>?> GetAllDepartmentsAsync(string search, int pageNumber, int pageSize,
         int departmentStatus, long organization, int organizationStatus)
     {
         logger.LogInformation("Getting all departments ...");
@@ -77,7 +81,7 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
 
     #region PUT Methods
 
-    public async Task<long> UpdateDepartment(Department department)
+    public async Task<long> UpdateDepartmentAsync(Department department)
     {
         logger.LogInformation("Checking available department ...");
         var existing =
@@ -106,7 +110,7 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
 
     #region DELETE Methods
 
-    public async Task<long> DeleteDepartment(long id)
+    public async Task<long> DeleteDepartmentAsync(long id)
     {
         logger.LogInformation("Checking available department ...");
         var existing =

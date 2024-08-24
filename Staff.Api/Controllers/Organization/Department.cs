@@ -18,9 +18,9 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPost("Save")]
-        public async Task<IActionResult> SaveDepartment([FromBody] DepartmentRequestDto requestDto)
+        public async Task<IActionResult> SaveDepartmentAsync([FromBody] DepartmentRequestDto requestDto)
         {
-            var result = await departmentService.SaveDepartment(requestDto);
+            var result = await departmentService.SaveDepartmentAsync(requestDto);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
@@ -32,19 +32,19 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDepartments(long id)
+        public async Task<IActionResult> GetDepartmentsAsync(long id)
         {
-            var result = await departmentService.GetDepartment(id);
+            var result = await departmentService.GetDepartmentAsync(id);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<DepartmentResponseDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpGet("list")]
-        public async Task<IActionResult> GetAllDepartments([FromQuery] PaginatedListRequestDto query,
+        public async Task<IActionResult> GetAllDepartmentsAsync([FromQuery] PaginatedListRequestDto query,
             [FromQuery] long organisationId)
         {
-            var result = await departmentService.GetAllDepartments(
+            var result = await departmentService.GetAllDepartmentsAsync(
                 search: query.SearchTerm,
                 pageNumber: query.PageNumber,
                 pageSize: query.PageSize,
@@ -63,9 +63,9 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDepartment(long id, [FromBody] DepartmentRequestDto requestDto)
+        public async Task<IActionResult> UpdateDepartmentAsync(long id, [FromBody] DepartmentRequestDto requestDto)
         {
-            var result = await departmentService.UpdateDepartment(requestDto, id);
+            var result = await departmentService.UpdateDepartmentAsync(requestDto, id);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
@@ -77,9 +77,9 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDepartment(long id)
+        public async Task<IActionResult> DeleteDepartmentAsync(long id)
         {
-            var results = await departmentService.DeleteDepartment(id);
+            var results = await departmentService.DeleteDepartmentAsync(id);
             return new ObjectResult(results.Response) { StatusCode = (int)results.StatusCode };
         }
 

@@ -13,7 +13,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 {
     #region POST Methods
 
-    public async Task<long> SaveOrganization(OrganizationDetails organizationDetails)
+    public async Task<long> SaveOrganizationAsync(OrganizationDetails organizationDetails)
     {
         logger.LogInformation("Saving company");
         context.Add(organizationDetails);
@@ -32,7 +32,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 
     #region GET Methods
 
-    public async Task<OrganizationDetails?> GetDetails(long id, int status)
+    public async Task<OrganizationDetails?> GetDetailsAsync(long id, int status)
     {
         logger.LogInformation("Getting details");
         var result = await context.Organization.FirstOrDefaultAsync(o => (o.Id == id) && (o.Status == status));
@@ -45,7 +45,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
         return result;
     }
 
-    public async Task<PaginatedListDto<OrganizationDetails>?> GetAllOrganizations(string search, int pageNumber,
+    public async Task<PaginatedListDto<OrganizationDetails>?> GetAllOrganizationsAsync(string search, int pageNumber,
         int pageSize, int status)
     {
         var totalCount = await context.Organization.CountAsync();
@@ -72,7 +72,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 
     #region PUT Methods
 
-    public async Task<long> UpdateOrganization(OrganizationDetails organizationDetails)
+    public async Task<long> UpdateOrganizationAsync(OrganizationDetails organizationDetails)
     {
         logger.LogInformation("Checking available organization");
         var existing = await context.Organization.FirstOrDefaultAsync(o =>
