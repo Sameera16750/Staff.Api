@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Staff.Core.Constants;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.DBContext;
+using Staff.Infrastructure.Models;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 namespace Staff.Infrastructure.Repositories.Implementations.Organization;
@@ -41,6 +42,54 @@ public class DesignationRepo(ApplicationDbContext context, ILogger<IDesignationR
         }
 
         return existing;
+    }
+
+    public async Task<Designation?> GetDesignationByIdAsync(long id, int status)
+    {
+        logger.LogInformation($"Getting designation by id={id}");
+        var designation = await context.Designation.Include(d => d.Department)
+            .FirstOrDefaultAsync(d => (d.Id == id && d.Status == status));
+        if (designation == null)
+        {
+            logger.LogWarning($"Designation {id} not found");
+        }
+
+        return designation;
+    }
+
+    public async Task<PaginatedListDto<Designation>?> GetAllDesignationsAsync(string search, int pageNumber,
+        int pageSize,
+        int designationStatus, long department,
+        int departmentStatus, int organizationStatus)
+    {
+        logger.LogInformation("Getting all designations ...");
+        var totalCount = await context.Designation.Where(d =>
+            ((d.Name.Contains(search) || d.Department!.Name.Contains(search) ||
+              d.Department!.OrganizationDetails!.Name.Contains(search)) &&
+             (department <= 0 || d.DepartmentId == department) &&
+             d.Status == designationStatus &&
+             d.Department!.Status == departmentStatus &&
+             d.Department!.OrganizationDetails!.Status == organizationStatus
+            )).CountAsync();
+        var designation = await context.Designation.Include(d => d.Department)
+            .Where(d =>
+                ((d.Name.Contains(search) || d.Department!.Name.Contains(search) ||
+                  d.Department!.OrganizationDetails!.Name.Contains(search)) &&
+                 (department <= 0 || d.DepartmentId == department) &&
+                 d.Status == designationStatus &&
+                 d.Department!.Status == departmentStatus &&
+                 d.Department!.OrganizationDetails!.Status == organizationStatus
+                ))
+            .OrderBy(d => d.Id)
+            .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var response = PaginatedListDto<Designation>.Create(source: designation, pageNumber: pageNumber,
+            pageSize: pageSize, totalItems: totalCount);
+        if (totalCount < 1)
+        {
+            logger.LogWarning("No designations found");
+        }
+
+        return response;
     }
 
     #endregion

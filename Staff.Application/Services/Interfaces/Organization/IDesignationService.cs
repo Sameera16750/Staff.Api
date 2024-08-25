@@ -10,4 +10,12 @@ public interface IDesignationService
     Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request);
 
     #endregion
+
+    #region GET Methods
+
+    Task<ResponseWithCode<dynamic>> GetDesignationByIdAsync(long id);
+    Task<ResponseWithCode<dynamic>> GetAllDesignationAsync(string search, int pageNumber, int pageSize,
+        int designationStatus, long department, int departmentStatus, int organizationStatus);
+
+    #endregion
 }

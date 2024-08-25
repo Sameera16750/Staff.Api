@@ -59,8 +59,10 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
         int departmentStatus, long organization, int organizationStatus)
     {
         logger.LogInformation("Getting all departments ...");
-        var totalCount = await context.Department.Where((d =>
-                d.OrganizationDetails!.Id == organization && d.OrganizationDetails.Status == organizationStatus))
+        var totalCount = await context.Department.Where(o =>
+                (((o.Name.Contains(search) || (o.OrganizationDetails!.Name.Contains(search))) &&
+                  (o.Status == departmentStatus) &&
+                  (o.OrganizationDetails!.Id == organization && o.OrganizationDetails!.Status == organizationStatus))))
             .CountAsync();
 
         var result = await context.Department.Include(d => d.OrganizationDetails).Where(o =>
@@ -69,7 +71,7 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
                                                      o.OrganizationDetails!.Status == organizationStatus))))
             .OrderBy(d => d.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        var response = PaginatedListDto<Department>.Create(source: result.AsQueryable(), pageNumber: pageNumber,
+        var response = PaginatedListDto<Department>.Create(source: result, pageNumber: pageNumber,
             pageSize: pageSize, totalItems: totalCount);
 
         if (result.Count >= 1) return response;

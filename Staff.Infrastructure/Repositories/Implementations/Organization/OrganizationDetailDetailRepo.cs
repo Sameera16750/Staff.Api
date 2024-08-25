@@ -57,7 +57,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
             .OrderBy(o => o.Id).Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        var response = PaginatedListDto<OrganizationDetails>.Create(source: result.AsQueryable(),
+        var response = PaginatedListDto<OrganizationDetails>.Create(source: result,
             pageNumber: pageNumber, pageSize: pageSize, totalItems: totalCount);
         if (result.Count < 1)
         {

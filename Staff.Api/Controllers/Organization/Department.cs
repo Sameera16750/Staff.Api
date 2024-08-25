@@ -40,7 +40,7 @@ namespace Staff.Api.Controllers.Organization
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<DepartmentResponseDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpGet("list")]
+        [HttpGet("List")]
         public async Task<IActionResult> GetAllDepartmentsAsync([FromQuery] PaginatedListRequestDto query,
             [FromQuery] long organisationId)
         {

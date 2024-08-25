@@ -17,9 +17,8 @@ public class PaginatedListDto<T>
         TotalPages = (int)Math.Ceiling((double)TotalItems / PageSize);
     }
 
-    public static PaginatedListDto<T> Create(IQueryable<T> source, int pageNumber, int pageSize, int totalItems)
+    public static PaginatedListDto<T> Create(List<T> source, int pageNumber, int pageSize, int totalItems)
     {
-        var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-        return new PaginatedListDto<T>(pageNumber, pageSize, totalItems, items);
+        return new PaginatedListDto<T>(pageNumber, pageSize, totalItems, source);
     }
 }
