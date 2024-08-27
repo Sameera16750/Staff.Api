@@ -93,4 +93,33 @@ public class DesignationRepo(ApplicationDbContext context, ILogger<IDesignationR
     }
 
     #endregion
+
+    #region PUT Methods
+
+    public async Task<long> UpdateDesignationAsync(Designation designation)
+    {
+        logger.LogInformation("Checking available designations");
+        var existing =
+            await context.Designation.FirstOrDefaultAsync(d =>
+                (d.Id == designation.Id && d.Status == designation.Status));
+        if (existing == null)
+        {
+            logger.LogWarning($"Designation {designation.Id} not found");
+            return Constants.ProcessStatus.NotFound;
+        }
+
+        logger.LogInformation("Updating designation ...");
+        context.Entry(existing).CurrentValues.SetValues(designation);
+        context.Entry(existing).State = EntityState.Modified;
+        var result = await context.SaveChangesAsync();
+        if (result < 1)
+        {
+            logger.LogWarning("Designation update failed");
+            return Constants.ProcessStatus.Failed;
+        }
+
+        return designation.Id;
+    }
+
+    #endregion
 }

@@ -19,4 +19,8 @@ public interface IDesignationRepo
         int designationStatus, long department, int departmentStatus, int organizationStatus);
 
     #endregion
+
+    #region PUT Methods
+    Task<long>UpdateDesignationAsync(Designation designation);
+    #endregion
 }

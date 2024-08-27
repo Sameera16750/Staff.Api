@@ -54,4 +54,7 @@
     <data name="DEPARTMENT_EXISTS" xml:space="preserve">
         <value>Department name already taken</value>
     </data>
+    <data name="INVALID_DESIGNATION" xml:space="preserve">
+        <value>Provided designation Invalid</value>
+    </data>
 </root>

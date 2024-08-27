@@ -31,7 +31,7 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DesignationResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpGet("{id}")]
+        [HttpGet("Get/{id:long}")]
         public async Task<IActionResult> GetDesignationByIdAsync(long id)
         {
             var result = await designationService.GetDesignationByIdAsync(id);
@@ -40,7 +40,7 @@ namespace Staff.Api.Controllers.Organization
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<DesignationResponseDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpGet("List")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllDesignationsAsync([FromQuery] PaginatedListRequestDto query,
             [FromQuery] long departmentId)
         {
@@ -54,6 +54,20 @@ namespace Staff.Api.Controllers.Organization
                 organizationStatus: Constants.Status.Active
             );
 
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+
+        #endregion
+
+        #region PUT Methods
+
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpPut("Update/{id:long}")]
+        public async Task<IActionResult> UpdateDesignation([FromBody] DesignationRequestDto request, long id)
+        {
+            var result = await designationService.UpdateDesignationAsync(request, id);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

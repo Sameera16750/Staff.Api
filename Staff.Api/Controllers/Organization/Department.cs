@@ -31,7 +31,7 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DepartmentResponseDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpGet("{id}")]
+        [HttpGet("Get/{id:long}")]
         public async Task<IActionResult> GetDepartmentsAsync(long id)
         {
             var result = await departmentService.GetDepartmentAsync(id);
@@ -40,7 +40,7 @@ namespace Staff.Api.Controllers.Organization
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<DepartmentResponseDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpGet("List")]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllDepartmentsAsync([FromQuery] PaginatedListRequestDto query,
             [FromQuery] long organisationId)
         {
@@ -62,7 +62,7 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id:long}")]
         public async Task<IActionResult> UpdateDepartmentAsync(long id, [FromBody] DepartmentRequestDto requestDto)
         {
             var result = await departmentService.UpdateDepartmentAsync(requestDto, id);
@@ -76,7 +76,7 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IdResponse<long>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id:long}")]
         public async Task<IActionResult> DeleteDepartmentAsync(long id)
         {
             var results = await departmentService.DeleteDepartmentAsync(id);

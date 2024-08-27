@@ -116,5 +116,11 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("DEPARTMENT_EXISTS", resourceCulture);
             }
         }
+        
+        internal static string INVALID_DESIGNATION {
+            get {
+                return ResourceManager.GetString("INVALID_DESIGNATION", resourceCulture);
+            }
+        }
     }
 }
