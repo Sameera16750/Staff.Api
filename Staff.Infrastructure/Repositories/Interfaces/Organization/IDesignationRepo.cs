@@ -23,4 +23,10 @@ public interface IDesignationRepo
     #region PUT Methods
     Task<long>UpdateDesignationAsync(Designation designation);
     #endregion
+
+    #region DELETE Methods
+
+    Task<long> DeleteDesignationAsync(long id);
+
+    #endregion
 }

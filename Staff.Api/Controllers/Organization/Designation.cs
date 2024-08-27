@@ -72,5 +72,19 @@ namespace Staff.Api.Controllers.Organization
         }
 
         #endregion
+
+        #region DELETE Methods
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpDelete("Delete/{id:long}")]
+        public async Task<IActionResult> DeleteDepartmentAsync(long id)
+        {
+            var results = await designationService.DeleteDesignationAsync(id);
+            return new ObjectResult(results.Response) { StatusCode = (int)results.StatusCode };
+        }
+
+        #endregion
     }
 }

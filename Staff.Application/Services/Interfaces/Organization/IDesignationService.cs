@@ -25,4 +25,10 @@ public interface IDesignationService
     Task<ResponseWithCode<dynamic>> UpdateDesignationAsync(DesignationRequestDto request, long id);
 
     #endregion
+
+    #region DELETE Methods
+
+    Task<ResponseWithCode<dynamic>> DeleteDesignationAsync(long id);
+
+    #endregion
 }

@@ -128,6 +128,31 @@ public class DesignationService(
 
     #endregion
 
+    #region DELETE Methods
+
+    public async Task<ResponseWithCode<dynamic>> DeleteDesignationAsync(long id)
+    {
+        try
+        {
+            var result = await designationRepo.DeleteDesignationAsync(id);
+            if (result == Constants.ProcessStatus.NotFound)
+            {
+                return responseHelper.BadRequest(Constants.Messages.Error.InvalidDesignation);
+            }
+
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.DeleteFailedErrorResponse()
+                : responseHelper.DeleteSuccessResponse(result);
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
     #region Private Methods
 
     private async Task<ResponseWithCode<dynamic>?> ValidateDesignationRequest(DesignationRequestDto request, long id)

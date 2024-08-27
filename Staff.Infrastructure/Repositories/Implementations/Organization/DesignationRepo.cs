@@ -122,4 +122,32 @@ public class DesignationRepo(ApplicationDbContext context, ILogger<IDesignationR
     }
 
     #endregion
+
+    #region DELETE Methods
+
+    public async Task<long> DeleteDesignationAsync(long id)
+    {
+        logger.LogInformation("Checking available designations");
+        var existing =
+            await context.Designation.FirstOrDefaultAsync(d => (d.Id == id && d.Status != Constants.Status.Deleted));
+        if (existing == null)
+        {
+            logger.LogWarning($"Designation {id} not found");
+            return Constants.ProcessStatus.NotFound;
+        }
+
+        logger.LogInformation("Deleting designation ...");
+        existing.Status = Constants.Status.Deleted;
+        context.Designation.Update(existing);
+        var result = await context.SaveChangesAsync();
+        if (result < 1)
+        {
+            logger.LogWarning("Department update failed.");
+            return Constants.ProcessStatus.Failed;
+        }
+
+        return existing.Id;
+    }
+
+    #endregion
 }
