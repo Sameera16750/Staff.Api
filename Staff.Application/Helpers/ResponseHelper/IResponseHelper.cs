@@ -5,7 +5,7 @@ namespace Staff.Application.Helpers.ResponseHelper;
 
 public interface IResponseHelper
 {
-    MessageResponse CreateMessageResponse(string message);
+    MessageResponse CreateMessageResponse(string message, string? suffix = "");
     IdResponse<T> CreateIdResponse<T>(T id, string message);
     ResponseWithCode<T> CreateResponseWithCode<T>(HttpStatusCode statusCode, T? data = default(T));
     ResponseWithCode<dynamic> InternalServerErrorResponse();
@@ -16,5 +16,5 @@ public interface IResponseHelper
     ResponseWithCode<dynamic> SaveSuccessResponse<T>(T id);
     ResponseWithCode<dynamic> DeleteSuccessResponse<T>(T id);
     ResponseWithCode<dynamic> UpdateSuccessResponse<T>(T id);
-    ResponseWithCode<dynamic> BadRequest(string message);
+    ResponseWithCode<dynamic> BadRequest(string message, string? suffix = "");
 }

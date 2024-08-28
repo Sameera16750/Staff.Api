@@ -19,28 +19,28 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="SAVE_SUCCESS" xml:space="preserve">
-        <value>Save oparation was successfull</value>
+        <value>Save operation was successfully</value>
     </data>
     <data name="SAVE_FAILD" xml:space="preserve">
-        <value>Save oparation failed</value>
+        <value>Save operation failed</value>
     </data>
     <data name="DATA_NOT_FOUND" xml:space="preserve">
         <value>Data not found</value>
     </data>
     <data name="INTERNAL_ERROR" xml:space="preserve">
-        <value>Internel Server Error</value>
+        <value>Internal Server Error</value>
     </data>
     <data name="UPDATE_SUCCESS" xml:space="preserve">
-        <value>Update oparation was successfull</value>
+        <value>Update operation was successfully</value>
     </data>
     <data name="UPDATE_FAILED" xml:space="preserve">
-        <value>Update oparation failed</value>
+        <value>Update operation failed</value>
     </data>
     <data name="DELETE_FAILED" xml:space="preserve">
-        <value>Delete oparation failed</value>
+        <value>Delete operation failed</value>
     </data>
     <data name="DELETE_SUCCESS" xml:space="preserve">
-        <value>Delete oparation was successfull</value>
+        <value>Delete operation was successfully</value>
     </data>
     <data name="INVALID_ORGANIZATION" xml:space="preserve">
         <value>Provided organization Invalid</value>
@@ -56,5 +56,11 @@
     </data>
     <data name="INVALID_DESIGNATION" xml:space="preserve">
         <value>Provided designation Invalid</value>
+    </data>
+    <data name="AGE_MINIMUM" xml:space="preserve">
+        <value>Age must be higher than or equal to</value>
+    </data>
+    <data name="AGE_MAXIMUM" xml:space="preserve">
+        <value>Age must be lower than or equal to</value>
     </data>
 </root>

@@ -122,5 +122,17 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("INVALID_DESIGNATION", resourceCulture);
             }
         }
+        
+        internal static string AGE_MINIMUM {
+            get {
+                return ResourceManager.GetString("AGE_MINIMUM", resourceCulture);
+            }
+        }
+        
+        internal static string AGE_MAXIMUM {
+            get {
+                return ResourceManager.GetString("AGE_MAXIMUM", resourceCulture);
+            }
+        }
     }
 }

@@ -7,11 +7,11 @@ namespace Staff.Application.Helpers.ResponseHelper;
 
 public class ResponseHelper(IMessageResourceHelper messageResourceHelper) : IResponseHelper
 {
-    public MessageResponse CreateMessageResponse(string message)
+    public MessageResponse CreateMessageResponse(string message, string? suffix = "")
     {
         return new MessageResponse()
         {
-            Message = messageResourceHelper.GetResource(message)
+            Message = $"{messageResourceHelper.GetResource(message)} {suffix}",
         };
     }
 
@@ -105,12 +105,12 @@ public class ResponseHelper(IMessageResourceHelper messageResourceHelper) : IRes
         };
     }
 
-    public ResponseWithCode<dynamic> BadRequest(string message)
+    public ResponseWithCode<dynamic> BadRequest(string message, string? suffix = "")
     {
         return new ResponseWithCode<dynamic>
         {
             StatusCode = HttpStatusCode.BadRequest,
-            Response = CreateMessageResponse(message)
+            Response = CreateMessageResponse(message, suffix)
         };
     }
 }

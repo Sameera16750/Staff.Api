@@ -11,6 +11,7 @@ public static class InfrastructureDiConfigs
         services.AddScoped<IOrganizationDetailRepo, OrganizationDetailDetailRepo>();
         services.AddScoped<IDepartmentRepo, DepartmentRepo>();
         services.AddScoped<IDesignationRepo, DesignationRepo>();
+        services.AddScoped<IStaffMemberRepo, StaffMemberReo>();
         return services;
     }
 }

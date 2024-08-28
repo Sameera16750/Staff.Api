@@ -15,6 +15,7 @@ public static class ApplicationDiConfigs
         services.AddScoped<IOrganizationDetailService, OrganizationDetailService>();
         services.AddScoped<IDepartmentService, DepartmentService>();
         services.AddScoped<IDesignationService, DesignationService>();
+        services.AddScoped<IStaffMemberService, StaffMemberService>();
         return services;
     }
 }
