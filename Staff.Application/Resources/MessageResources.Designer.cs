@@ -134,5 +134,11 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("AGE_MAXIMUM", resourceCulture);
             }
         }
+        
+        internal static string INVALID_STAFF {
+            get {
+                return ResourceManager.GetString("INVALID_STAFF", resourceCulture);
+            }
+        }
     }
 }

@@ -33,6 +33,7 @@ public static class Constants
             public const string DesignationExists = "DESIGNATION_EXISTS";
             public const string AgeMinimum = "AGE_MINIMUM";
             public const string AgeMaximum = "AGE_MAXIMUM";
+            public const string InvalidStaff = "INVALID_STAFF";
         }
 
         #endregion

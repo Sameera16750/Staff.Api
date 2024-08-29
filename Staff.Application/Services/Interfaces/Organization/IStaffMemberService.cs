@@ -10,4 +10,16 @@ public interface IStaffMemberService
     Task<ResponseWithCode<dynamic>> SaveStaffMemberAsync(StaffMemberRequestDto staffMember);
 
     #endregion
+
+    #region GET Methods
+
+    Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id, int status);
+
+    #endregion
+
+    #region PUT Methods
+
+    Task<ResponseWithCode<dynamic>> UpdateStaffMemberAsync(StaffMemberRequestDto staffMember,long id);
+
+    #endregion
 }

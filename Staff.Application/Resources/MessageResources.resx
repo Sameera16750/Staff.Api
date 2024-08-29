@@ -63,4 +63,7 @@
     <data name="AGE_MAXIMUM" xml:space="preserve">
         <value>Age must be lower than or equal to</value>
     </data>
+    <data name="INVALID_STAFF" xml:space="preserve">
+        <value>Provided staff details Invalid</value>
+    </data>
 </root>
