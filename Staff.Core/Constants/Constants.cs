@@ -34,6 +34,7 @@ public static class Constants
             public const string AgeMinimum = "AGE_MINIMUM";
             public const string AgeMaximum = "AGE_MAXIMUM";
             public const string InvalidStaff = "INVALID_STAFF";
+            public const string SameStaffUsageForReviewer = "SAME_STAFF_USAGE_FOR_REVIEWER";
         }
 
         #endregion

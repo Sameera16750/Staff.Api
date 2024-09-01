@@ -33,4 +33,7 @@ public class StaffMember {
     
     [Required] public required int Status { get; set; }
     
+    public ICollection<PerformanceReview>? ReviewGiven { get; set; }
+    
+    public ICollection<PerformanceReview>? ReviewReceived { get; set; }
 }

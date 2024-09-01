@@ -46,5 +46,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne<Designation>(s => s.Designation)
             .WithMany(d => d.StaffMembers)
             .HasForeignKey(s => s.DesignationId);
+
+        modelBuilder.Entity<PerformanceReview>()
+            .HasOne<StaffMember>(p => p.Reviewer)
+            .WithMany(s => s.ReviewGiven)
+            .HasForeignKey(p => p.ReviewerId);
+
+        modelBuilder.Entity<PerformanceReview>()
+            .HasOne<StaffMember>(p => p.StaffMember)
+            .WithMany(s => s.ReviewReceived)
+            .HasForeignKey(p => p.StaffMemberId);
     }
 }
