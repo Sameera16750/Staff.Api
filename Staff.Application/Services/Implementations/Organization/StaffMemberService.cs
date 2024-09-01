@@ -1,11 +1,13 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
 using Staff.Application.Helpers.ResponseHelper;
+using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
 using Staff.Core.Constants;
+using Staff.Infrastructure.Models.Staff;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 namespace Staff.Application.Services.Implementations.Organization;
@@ -77,6 +79,29 @@ public class StaffMemberService(
         }
     }
 
+    public async Task<ResponseWithCode<dynamic>> GetAllStaffMembersAsync(StaffFiltersDto filters,
+        StatusDto status)
+    {
+        try
+        {
+            logger.LogInformation("Getting all staff members ...");
+            var staff = await staffMemberRepo.GetAllMembersAsync(filters, status);
+            var response = new PaginatedListResponseDto<StaffMemberResponseDto>();
+            if (staff != null)
+            {
+                response = response.ToPaginatedListResponse(staff,
+                    new StaffMemberResponseDto().MapToListResponse(staff.Items));
+            }
+
+            return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
     #endregion
 
     #region PUT Methods
@@ -99,6 +124,31 @@ public class StaffMemberService(
         catch (Exception e)
         {
             logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+    
+    #region DELETE Methods
+
+    public async Task<ResponseWithCode<dynamic>> DeleteStaffMemberAsync(long id)
+    {
+        try
+        {
+            var result = await staffMemberRepo.DeleteStaffMemberAsync(id);
+            if (result == Constants.ProcessStatus.NotFound)
+            {
+                return responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff);
+            }
+
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.DeleteFailedErrorResponse()
+                : responseHelper.DeleteSuccessResponse(result);
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
             return responseHelper.InternalServerErrorResponse();
         }
     }

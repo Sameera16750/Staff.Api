@@ -37,4 +37,9 @@ public class StaffMemberResponseDto
             DesignationName = staffMember.Designation!.Name,
         };
     }
+
+    public List<StaffMemberResponseDto> MapToListResponse(List<StaffMember> staffMembers)
+    {
+        return staffMembers.Select(MapToResponse).ToList();
+    }
 }

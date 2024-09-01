@@ -93,7 +93,7 @@ public class DesignationService(
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e);
+            logger.LogError(e, e.Message);
             return responseHelper.InternalServerErrorResponse();
         }
     }

@@ -140,13 +140,10 @@ public class DesignationRepo(ApplicationDbContext context, ILogger<IDesignationR
         existing.Status = Constants.Status.Deleted;
         context.Designation.Update(existing);
         var result = await context.SaveChangesAsync();
-        if (result < 1)
-        {
-            logger.LogWarning("Department update failed.");
-            return Constants.ProcessStatus.Failed;
-        }
+        if (result >= 1) return existing.Id;
+        logger.LogWarning("Department deletion failed.");
+        return Constants.ProcessStatus.Failed;
 
-        return existing.Id;
     }
 
     #endregion
