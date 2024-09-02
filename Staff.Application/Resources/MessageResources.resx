@@ -69,4 +69,7 @@
     <data name="SAME_STAFF_USAGE_FOR_REVIEWER" xml:space="preserve">
         <value>Same staff member cannot be use as reviewer</value>
     </data>
+    <data name="INVALID_REVIEW" xml:space="preserve">
+        <value>Provided review Invalid</value>
+    </data>
 </root>

@@ -51,13 +51,10 @@ namespace Staff.Application.Services.Implementations.Organization
                 logger.LogInformation("Find organization processing..");
                 var result = await organizationDetailRepo.GetDetailsAsync(id, status);
 
-                if (result != null)
-                {
-                    OrganizationDetailsResponseDto dto = new OrganizationDetailsResponseDto().MapToResponse(result);
-                    return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, dto);
-                }
+                if (result == null) return responseHelper.NotFoundErrorResponse();
+                var dto = new OrganizationDetailsResponseDto().MapToResponse(result);
+                return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, dto);
 
-                return responseHelper.NotFoundErrorResponse();
             }
             catch (Exception e)
             {

@@ -146,5 +146,11 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("SAME_STAFF_USAGE_FOR_REVIEWER", resourceCulture);
             }
         }
+        
+        internal static string INVALID_REVIEW {
+            get {
+                return ResourceManager.GetString("INVALID_REVIEW", resourceCulture);
+            }
+        }
     }
 }

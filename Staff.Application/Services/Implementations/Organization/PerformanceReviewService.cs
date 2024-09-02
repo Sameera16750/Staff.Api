@@ -1,7 +1,10 @@
+using System.Net;
 using Microsoft.Extensions.Logging;
 using Staff.Application.Helpers.ResponseHelper;
+using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
+using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
 using Staff.Core.Constants;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
@@ -32,6 +35,33 @@ public class PerformanceReviewService(
 
             logger.LogInformation("Performance review saved successfully");
             return responseHelper.SaveSuccessResponse(result);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
+    #region GET Methods
+
+    public async Task<ResponseWithCode<dynamic>> GetPerformanceReviewByIdAsync(long id, StatusDto status)
+    {
+        try
+        {
+            logger.LogInformation("Getting performance review ...");
+            var review = await performanceReviewRepo.GetPerformanceReviewByIdAsync(id, status);
+            if (review == null)
+            {
+                logger.LogError($"Failed to get performance review : {id}");
+                return responseHelper.NotFoundErrorResponse();
+            }
+
+            logger.LogInformation($"Performance review retrieved successfully by using {id}");
+            return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK,
+                new PerformanceReviewResponseDto().MapToResponse(review));
         }
         catch (Exception e)
         {
