@@ -16,7 +16,7 @@ public static class Constants
         }
 
         #endregion
-        
+
         #region Error Messages
 
         public static class Error
@@ -40,7 +40,6 @@ public static class Constants
 
         #endregion
     }
-    
 
     #endregion
 
@@ -50,6 +49,7 @@ public static class Constants
     {
         public static readonly int Active = 1;
         public static readonly int Deleted = 0;
+        public static readonly int All = -10;
     }
 
     #endregion
@@ -59,20 +59,20 @@ public static class Constants
     public static class ProcessStatus
     {
         public static readonly int Success = 1;
-        public static readonly int Failed= 0;
+        public static readonly int Failed = 0;
         public static readonly int NotFound = -1;
         public static readonly int AlreadyExists = -2;
     }
 
     #endregion
-    
+
     #region Files
 
     public static class Files
     {
         #region Resource Files
 
-        public static readonly string Messages="Staff.Application.Resources.MessageResources";
+        public static readonly string Messages = "Staff.Application.Resources.MessageResources";
 
         #endregion
     }

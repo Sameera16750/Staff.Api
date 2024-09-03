@@ -27,4 +27,9 @@ public class PerformanceReviewResponseDto
                ReviewComment = review.ReviewComment,
           };
      }
+
+     public List<PerformanceReviewResponseDto> MapToListResponse(List<PerformanceReview> reviews)
+     {
+          return reviews.Select(MapToResponse).ToList();
+     }
 }

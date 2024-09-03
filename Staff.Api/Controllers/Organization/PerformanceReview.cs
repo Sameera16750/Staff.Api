@@ -4,6 +4,7 @@ using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
+using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Api.Controllers.Organization
 {
@@ -35,6 +36,16 @@ namespace Staff.Api.Controllers.Organization
         {
             var response = await performanceReviewService.GetPerformanceReviewByIdAsync(id, new StatusDto());
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK,
+            Type = typeof(PaginatedListResponseDto<PerformanceReviewResponseDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetOrganizationListAsync([FromQuery] PerformanceReviewFilterDto filters)
+        {
+            var result = await performanceReviewService.GetAllPerformanceReviewsAsync(filters, new StatusDto());
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
         #endregion

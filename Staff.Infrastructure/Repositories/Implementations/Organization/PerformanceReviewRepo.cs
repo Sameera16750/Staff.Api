@@ -4,6 +4,8 @@ using Staff.Application.Models.Request.common;
 using Staff.Core.Constants;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.DBContext;
+using Staff.Infrastructure.Models;
+using Staff.Infrastructure.Models.Staff;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 namespace Staff.Infrastructure.Repositories.Implementations.Organization;
@@ -45,6 +47,34 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
 
         logger.LogInformation("performance review founded");
         return review;
+    }
+
+    public async Task<PaginatedListDto<PerformanceReview>?> GetAllPerformanceReviewsAsync(
+        PerformanceReviewFilterDto filters,
+        StatusDto status)
+    {
+        var query = context.PerformanceReview.Where(p =>
+        (
+            (status.PerformanceReview == Constants.Status.All || p.Status == status.PerformanceReview) &&
+            (status.Staff == Constants.Status.All || p.StaffMember!.Status == status.Staff) &&
+            (status.Staff == Constants.Status.All || status.Staff == p.Reviewer!.Status) &&
+            (filters.DepartmentId == 0 || (p.StaffMember!.Designation!.DepartmentId == filters.DepartmentId ||
+                                           p.Reviewer!.Designation!.DepartmentId == filters.DepartmentId)) &&
+            (filters.ReviewerId == 0 || filters.ReviewerId == p.ReviewerId) &&
+            (filters.StaffId == 0 || filters.StaffId == p.StaffMemberId) &&
+            (filters.OrganizationId == 0 ||
+             filters.OrganizationId == p.StaffMember!.Designation!.Department!.OrganizationId) &&
+            (p.StaffMember!.FirstName.Contains(filters.Search) || p.StaffMember.LastName!.Contains(filters.Search) ||
+             p.Reviewer!.FirstName.Contains(filters.Search) || p.Reviewer.LastName!.Contains(filters.Search))));
+        var count = await query.CountAsync();
+        var reviews = await query
+            .Include(p => p.Reviewer)
+            .Include(p => p.StaffMember)
+            .OrderBy(d => d.Id)
+            .Skip((filters.PageNumber - 1) * filters.PageSize).Take(filters.PageSize).ToListAsync();
+        var response = PaginatedListDto<PerformanceReview>.Create(source: reviews, pageNumber: filters.PageNumber,
+            pageSize: filters.PageSize, totalItems: count);
+        return response;
     }
 
     #endregion

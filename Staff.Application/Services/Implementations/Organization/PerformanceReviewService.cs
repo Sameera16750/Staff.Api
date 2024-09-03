@@ -7,6 +7,7 @@ using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
 using Staff.Core.Constants;
+using Staff.Infrastructure.Models.Staff;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 namespace Staff.Application.Services.Implementations.Organization;
@@ -62,6 +63,30 @@ public class PerformanceReviewService(
             logger.LogInformation($"Performance review retrieved successfully by using {id}");
             return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK,
                 new PerformanceReviewResponseDto().MapToResponse(review));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    public async Task<ResponseWithCode<dynamic>> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters, StatusDto status)
+    {
+        try
+        {
+            logger.LogInformation("GetAll reviews processing ...");
+            var reviews = await performanceReviewRepo.GetAllPerformanceReviewsAsync(filters, status);
+            var response = new PaginatedListResponseDto<PerformanceReviewResponseDto>();
+            if (reviews != null)
+            {
+                response = response.ToPaginatedListResponse(
+                    reviews,
+                    new PerformanceReviewResponseDto().MapToListResponse(reviews.Items)
+                );
+            }
+
+            return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
         }
         catch (Exception e)
         {
