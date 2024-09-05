@@ -15,7 +15,7 @@ public interface IDepartmentRepo
 
     Task<Department?> GetDepartmentByNameAsync(string name, long organization, int status);
     
-    Task<Department?> GetDepartmentAsync(long id, int status);
+    Task<Department?> GetDepartmentAsync(long id,long organizationId, int status);
 
     Task<PaginatedListDto<Department>?> GetAllDepartmentsAsync(string search, int pageNumber, int pageSize,
         int departmentStatus, long organization, int organizationStatus);
@@ -30,7 +30,7 @@ public interface IDepartmentRepo
 
     #region DELETE Methods
 
-    Task<long> DeleteDepartmentAsync(long id);
+    Task<long> DeleteDepartmentAsync(long id,long organizationId);
 
     #endregion
 }

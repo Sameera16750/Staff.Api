@@ -18,9 +18,10 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPost("Save")]
-        public async Task<IActionResult> SaveDesignationAsync([FromBody] DesignationRequestDto request)
+        public async Task<IActionResult> SaveDesignationAsync([FromBody] DesignationRequestDto request,
+            [FromQuery] long organizationId)
         {
-            var result = await designationService.SaveDesignationAsync(request);
+            var result = await designationService.SaveDesignationAsync(request, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
@@ -65,9 +66,10 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPut("Update/{id:long}")]
-        public async Task<IActionResult> UpdateDesignation([FromBody] DesignationRequestDto request, long id)
+        public async Task<IActionResult> UpdateDesignation([FromBody] DesignationRequestDto request, long id,
+            [FromQuery] long organizationId)
         {
-            var result = await designationService.UpdateDesignationAsync(request, id);
+            var result = await designationService.UpdateDesignationAsync(request, id, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

@@ -41,12 +41,13 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
         return existing;
     }
 
-    public async Task<Department?> GetDepartmentAsync(long id, int status)
+    public async Task<Department?> GetDepartmentAsync(long id, long organizationId, int status)
     {
         logger.LogInformation("Getting department ...");
         var result = await context.Department.Include(d => d.OrganizationDetails)
             .FirstOrDefaultAsync(d =>
-                (d.Id == id) && (d.Status == status) && (d.OrganizationDetails!.Status == Constants.Status.Active));
+                (organizationId == 0 || d.OrganizationId == organizationId) && (d.Id == id) && (d.Status == status) &&
+                (d.OrganizationDetails!.Status == Constants.Status.Active));
         if (result == null)
         {
             logger.LogWarning("Department not found.");
@@ -112,12 +113,12 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
 
     #region DELETE Methods
 
-    public async Task<long> DeleteDepartmentAsync(long id)
+    public async Task<long> DeleteDepartmentAsync(long id, long organizationId)
     {
         logger.LogInformation("Checking available department ...");
         var existing =
             await context.Department.FirstOrDefaultAsync(d =>
-                (d.Id == id) && (d.Status != Constants.Status.Deleted));
+                (d.OrganizationId == organizationId) && (d.Id == id) && (d.Status != Constants.Status.Deleted));
         if (existing == null)
         {
             logger.LogWarning("Department not found.");

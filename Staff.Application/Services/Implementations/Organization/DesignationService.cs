@@ -19,12 +19,14 @@ public class DesignationService(
 {
     #region POST Methods
 
-    public async Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request)
+    public async Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request,
+        long organizationId)
     {
         try
         {
             logger.LogInformation("Save designation processing ...");
-            var department = await departmentRepo.GetDepartmentAsync(request.DepartmentId, Constants.Status.Active);
+            var department =
+                await departmentRepo.GetDepartmentAsync(request.DepartmentId, organizationId, Constants.Status.Active);
             if (department == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
             var designation =
                 await designationRepo.GetDesignationByNameAsync(request.Name, request.DepartmentId,
@@ -102,11 +104,11 @@ public class DesignationService(
 
     #region PUT Methods
 
-    public async Task<ResponseWithCode<dynamic>> UpdateDesignationAsync(DesignationRequestDto request, long id)
+    public async Task<ResponseWithCode<dynamic>> UpdateDesignationAsync(DesignationRequestDto request, long id, long organizationId)
     {
         try
         {
-            var validate = await ValidateDesignationRequest(request, id);
+            var validate = await ValidateDesignationRequest(request, id,organizationId);
             if (validate != null) return validate;
             logger.LogInformation("Update designation processing ...");
             var updated = request.MapToEntity(request, Constants.Status.Active);
@@ -155,11 +157,11 @@ public class DesignationService(
 
     #region Private Methods
 
-    private async Task<ResponseWithCode<dynamic>?> ValidateDesignationRequest(DesignationRequestDto request, long id)
+    private async Task<ResponseWithCode<dynamic>?> ValidateDesignationRequest(DesignationRequestDto request, long id, long organizationId)
     {
         logger.LogInformation("Starting to validate designation ...");
 
-        var department = await departmentRepo.GetDepartmentAsync(request.DepartmentId, Constants.Status.Active);
+        var department = await departmentRepo.GetDepartmentAsync(request.DepartmentId,organizationId, Constants.Status.Active);
         if (department == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
         var designation =
             await designationRepo.GetDesignationByNameAsync(request.Name, request.DepartmentId,

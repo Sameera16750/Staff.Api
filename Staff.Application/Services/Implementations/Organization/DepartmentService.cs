@@ -19,17 +19,18 @@ public class DepartmentService(
 {
     #region POST Methods
 
-    public async Task<ResponseWithCode<dynamic>> SaveDepartmentAsync(DepartmentRequestDto requestDto)
+    public async Task<ResponseWithCode<dynamic>> SaveDepartmentAsync(DepartmentRequestDto requestDto,
+        long organizationId)
     {
         try
         {
             logger.LogInformation("Saving department");
-            var org = await organizationDetailRepo.GetDetailsAsync(requestDto.Organization, Constants.Status.Active);
+            var org = await organizationDetailRepo.GetDetailsAsync(organizationId, Constants.Status.Active);
             if (org == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
             var existingDepartment = await departmentRepo
-                .GetDepartmentByNameAsync(requestDto.Name, requestDto.Organization, Constants.Status.Active);
+                .GetDepartmentByNameAsync(requestDto.Name, organizationId, Constants.Status.Active);
             if (existingDepartment == null) return responseHelper.BadRequest(Constants.Messages.Error.DepartmentExist);
-            var department = requestDto.MapToEntity(requestDto, Constants.Status.Active);
+            var department = requestDto.MapToEntity(requestDto, organizationId, Constants.Status.Active);
             var result = await departmentRepo.SaveDepartmentAsync(department);
             return result == Constants.ProcessStatus.Failed
                 ? responseHelper.SaveFailedResponse()
@@ -46,11 +47,11 @@ public class DepartmentService(
 
     #region GET Methods
 
-    public async Task<ResponseWithCode<dynamic>> GetDepartmentAsync(long id)
+    public async Task<ResponseWithCode<dynamic>> GetDepartmentAsync(long id, long organizationId)
     {
         try
         {
-            var department = await departmentRepo.GetDepartmentAsync(id, Constants.Status.Active);
+            var department = await departmentRepo.GetDepartmentAsync(id, organizationId, Constants.Status.Active);
             if (department == null) return responseHelper.NotFoundErrorResponse();
             var response = new DepartmentResponseDto().MapToResponse(department);
             return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
@@ -95,19 +96,20 @@ public class DepartmentService(
 
     #region PUT Methods
 
-    public async Task<ResponseWithCode<dynamic>> UpdateDepartmentAsync(DepartmentRequestDto requestDto, long id)
+    public async Task<ResponseWithCode<dynamic>> UpdateDepartmentAsync(DepartmentRequestDto requestDto, long id,
+        long organizationId)
     {
         try
         {
             logger.LogInformation("Updating department");
             var organization =
-                await organizationDetailRepo.GetDetailsAsync(requestDto.Organization, Constants.Status.Active);
+                await organizationDetailRepo.GetDetailsAsync(organizationId, Constants.Status.Active);
             if (organization == null)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
             }
 
-            var department = requestDto.MapToEntity(requestDto, Constants.Status.Active);
+            var department = requestDto.MapToEntity(requestDto, organizationId, Constants.Status.Active);
             department.Id = id;
             var result =
                 await departmentRepo.UpdateDepartmentAsync(department);
@@ -131,11 +133,11 @@ public class DepartmentService(
 
     #region DELETE Methods
 
-    public async Task<ResponseWithCode<dynamic>> DeleteDepartmentAsync(long id)
+    public async Task<ResponseWithCode<dynamic>> DeleteDepartmentAsync(long id, long organizationId)
     {
         try
         {
-            var result = await departmentRepo.DeleteDepartmentAsync(id);
+            var result = await departmentRepo.DeleteDepartmentAsync(id, organizationId);
             if (result == Constants.ProcessStatus.NotFound)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
