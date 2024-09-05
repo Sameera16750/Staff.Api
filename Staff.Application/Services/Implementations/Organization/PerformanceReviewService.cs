@@ -20,12 +20,13 @@ public class PerformanceReviewService(
 {
     #region POST Methods
 
-    public async Task<ResponseWithCode<dynamic>> SavePerformanceReview(PerformanceReviewRequestDto request)
+    public async Task<ResponseWithCode<dynamic>> SavePerformanceReview(PerformanceReviewRequestDto request,
+        long organizationId)
     {
         try
         {
             logger.LogInformation("Saving performance review ...");
-            var validity = await ValidateReview(request);
+            var validity = await ValidateReview(request, organizationId);
             if (validity != null) return validity;
             var result = await performanceReviewRepo.SavePerformanceReviewAsync(request.MapToEntity(request));
             if (result == Constants.ProcessStatus.Failed)
@@ -71,7 +72,8 @@ public class PerformanceReviewService(
         }
     }
 
-    public async Task<ResponseWithCode<dynamic>> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters, StatusDto status)
+    public async Task<ResponseWithCode<dynamic>> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters,
+        StatusDto status)
     {
         try
         {
@@ -99,7 +101,8 @@ public class PerformanceReviewService(
 
     #region Private Methods
 
-    private async Task<ResponseWithCode<dynamic>?> ValidateReview(PerformanceReviewRequestDto request)
+    private async Task<ResponseWithCode<dynamic>?> ValidateReview(PerformanceReviewRequestDto request,
+        long organizationId)
     {
         if (request.StaffMemberId == request.ReviewerId)
         {
@@ -117,13 +120,13 @@ public class PerformanceReviewService(
             request.ReviewDate = request.ReviewDate.ToUniversalTime();
         }
 
-        if (staffMember == null)
+        if (staffMember == null || staffMember.Designation!.Department!.OrganizationId != organizationId)
         {
             logger.LogError($"Staff member with id {request.StaffMemberId} was not found");
             return responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff);
         }
 
-        if (reviewer != null) return null;
+        if (reviewer != null && reviewer.Designation!.Department!.OrganizationId == organizationId) return null;
         logger.LogError($"Reviewer with id {request.ReviewerId} was not found");
         return responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff, "for reviewer");
     }

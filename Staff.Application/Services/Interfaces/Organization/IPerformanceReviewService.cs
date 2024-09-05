@@ -9,7 +9,7 @@ public interface IPerformanceReviewService
 {
     #region POST Methods
 
-    Task<ResponseWithCode<dynamic>> SavePerformanceReview(PerformanceReviewRequestDto request);
+    Task<ResponseWithCode<dynamic>> SavePerformanceReview(PerformanceReviewRequestDto request, long organizationId);
 
     #endregion
 

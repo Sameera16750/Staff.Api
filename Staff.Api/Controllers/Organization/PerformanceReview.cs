@@ -18,9 +18,9 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPost("Save")]
-        public async Task<IActionResult> SavePerformanceReview([FromBody] PerformanceReviewRequestDto request)
+        public async Task<IActionResult> SavePerformanceReview([FromBody] PerformanceReviewRequestDto request, [FromQuery] long organizationId)
         {
-            var result = await performanceReviewService.SavePerformanceReview(request);
+            var result = await performanceReviewService.SavePerformanceReview(request,organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

@@ -53,23 +53,19 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
         PerformanceReviewFilterDto filters,
         StatusDto status)
     {
-        var query = context.PerformanceReview.Where(p =>
-        (
-            (status.PerformanceReview == Constants.Status.All || p.Status == status.PerformanceReview) &&
-            (status.Staff == Constants.Status.All || p.StaffMember!.Status == status.Staff) &&
-            (status.Staff == Constants.Status.All || status.Staff == p.Reviewer!.Status) &&
-            (filters.DepartmentId == 0 || (p.StaffMember!.Designation!.DepartmentId == filters.DepartmentId ||
-                                           p.Reviewer!.Designation!.DepartmentId == filters.DepartmentId)) &&
-            (filters.ReviewerId == 0 || filters.ReviewerId == p.ReviewerId) &&
-            (filters.StaffId == 0 || filters.StaffId == p.StaffMemberId) &&
-            (filters.OrganizationId == 0 ||
-             filters.OrganizationId == p.StaffMember!.Designation!.Department!.OrganizationId) &&
-            (p.StaffMember!.FirstName.Contains(filters.Search) || p.StaffMember.LastName!.Contains(filters.Search) ||
-             p.Reviewer!.FirstName.Contains(filters.Search) || p.Reviewer.LastName!.Contains(filters.Search))));
+        var query = context.PerformanceReview.Include(p => p.Reviewer).Include(p => p.StaffMember).Where(p =>
+            (p.Status == status.PerformanceReview && (p.ReviewComment.ToLower().Contains(filters.Search.ToLower()) ||
+                                                      p.Reviewer!.FirstName.ToLower()
+                                                          .Contains(filters.Search.ToLower()) ||
+                                                      p.Reviewer.LastName!.ToLower()
+                                                          .Contains(filters.Search.ToLower()) ||
+                                                      p.StaffMember!.FirstName.ToLower()
+                                                          .Contains(filters.Search.ToLower()) ||
+                                                      p.StaffMember.LastName!.ToLower()
+                                                          .Contains(filters.Search.ToLower())) &&
+             (filters.DepartmentId == 0 || filters.DepartmentId == p.StaffMember!.Designation!.DepartmentId)));
         var count = await query.CountAsync();
         var reviews = await query
-            .Include(p => p.Reviewer)
-            .Include(p => p.StaffMember)
             .OrderBy(d => d.Id)
             .Skip((filters.PageNumber - 1) * filters.PageSize).Take(filters.PageSize).ToListAsync();
         var response = PaginatedListDto<PerformanceReview>.Create(source: reviews, pageNumber: filters.PageNumber,

@@ -37,10 +37,12 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
     public async Task<StaffMember?> GetStaffMemberByIdAsync(long id, int status)
     {
         logger.LogInformation("Getting staff member by id");
-        var staffMembers = await context.StaffMember.Include(s => s.Designation).FirstOrDefaultAsync(s =>
-            (s.Id == id && s.Status == status && s.Designation!.Status == Constants.Status.Active &&
-             s.Designation.Department!.Status == Constants.Status.Active &&
-             s.Designation.Department.OrganizationDetails!.Status == Constants.Status.Active));
+        var staffMembers = await context.StaffMember.Include(s => s.Designation)
+            .Include(s => s.Designation!.Department)
+            .FirstOrDefaultAsync(s =>
+                (s.Id == id && s.Status == status && s.Designation!.Status == Constants.Status.Active &&
+                 s.Designation.Department!.Status == Constants.Status.Active &&
+                 s.Designation.Department.OrganizationDetails!.Status == Constants.Status.Active));
 
         if (staffMembers == null) logger.LogWarning("Staff member not found");
         return staffMembers;
