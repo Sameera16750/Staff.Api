@@ -72,7 +72,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
 
     #region PUT Methods
 
-    public async Task<long> UpdateOrganizationAsync(OrganizationDetails organizationDetails)
+    public async Task<long> UpdateOrganizationAsync(OrganizationDetails organizationDetails, bool isKeyUpdate = false)
     {
         logger.LogInformation("Checking available organization");
         var existing = await context.Organization.FirstOrDefaultAsync(o =>
@@ -83,8 +83,16 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
             return 0;
         }
 
+        var existingApiKey = existing.ApiKey;
+
         logger.LogInformation("Updating Organization");
         context.Entry(existing).CurrentValues.SetValues(organizationDetails);
+
+        if (!isKeyUpdate)
+        {
+            context.Entry(existing).Entity.ApiKey = existingApiKey;
+        }
+
         context.Entry(existing).State = EntityState.Modified;
         var result = await context.SaveChangesAsync();
         if (result < 1)

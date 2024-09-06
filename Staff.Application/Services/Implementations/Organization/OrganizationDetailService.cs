@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
 using Staff.Application.Helpers.ResponseHelper;
+using Staff.Application.Helpers.SecurityHelper;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
@@ -14,7 +15,8 @@ namespace Staff.Application.Services.Implementations.Organization
     public class OrganizationDetailService(
         IOrganizationDetailRepo organizationDetailRepo,
         ILogger<IOrganizationDetailService> logger,
-        IResponseHelper responseHelper) : IOrganizationDetailService
+        IResponseHelper responseHelper,
+        ISecurityHelper securityHelper) : IOrganizationDetailService
     {
         #region POST Methods
 
@@ -23,12 +25,22 @@ namespace Staff.Application.Services.Implementations.Organization
             try
             {
                 logger.LogInformation("Save organization processing..");
+                if (organization.ExpireDate.Kind != DateTimeKind.Utc)
+                {
+                    organization.ExpireDate = organization.ExpireDate.ToUniversalTime();
+                }
 
-                OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
+                var apiKey = securityHelper.GenerateApiToken(organization.Name);
+                OrganizationDetails newOrganization =
+                    organization.MapToEntity(organization, apiKey, Constants.Status.Active);
                 var result = await organizationDetailRepo.SaveOrganizationAsync(newOrganization);
                 if (result > 0)
                 {
-                    return responseHelper.SaveSuccessResponse(result);
+                    return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.Created, new IdResponse<string>
+                    {
+                        Id = apiKey,
+                        Message = "Organization Creation successfully, Use this ID as api key"
+                    });
                 }
 
                 return responseHelper.SaveFailedResponse();
@@ -54,7 +66,6 @@ namespace Staff.Application.Services.Implementations.Organization
                 if (result == null) return responseHelper.NotFoundErrorResponse();
                 var dto = new OrganizationDetailsResponseDto().MapToResponse(result);
                 return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, dto);
-
             }
             catch (Exception e)
             {
@@ -63,13 +74,15 @@ namespace Staff.Application.Services.Implementations.Organization
             }
         }
 
-        public async Task<ResponseWithCode<dynamic>> GetAllOrganizationsAsync(int pageNumber, int pageSize, string search,
+        public async Task<ResponseWithCode<dynamic>> GetAllOrganizationsAsync(int pageNumber, int pageSize,
+            string search,
             int status)
         {
             try
             {
                 logger.LogInformation("Search organizations processing..");
-                var result = await organizationDetailRepo.GetAllOrganizationsAsync(search: search, pageNumber: pageNumber,
+                var result = await organizationDetailRepo.GetAllOrganizationsAsync(search: search,
+                    pageNumber: pageNumber,
                     pageSize: pageSize, status: status);
                 var response = new PaginatedListResponseDto<OrganizationDetailsResponseDto>();
                 if (result != null)
@@ -96,18 +109,37 @@ namespace Staff.Application.Services.Implementations.Organization
 
         #region PUT Methods
 
-        public async Task<ResponseWithCode<dynamic>> UpdateOrganizationAsync(OrganizationRequestDto organization, long id)
+        public async Task<ResponseWithCode<dynamic>> UpdateOrganizationAsync(OrganizationRequestDto organization,
+            long id, bool updateApikey)
         {
             try
             {
                 logger.LogInformation("Update organization processing..");
 
-                OrganizationDetails newOrganization = organization.MapToEntity(organization, Constants.Status.Active);
+                if (organization.ExpireDate.Kind != DateTimeKind.Utc)
+                {
+                    organization.ExpireDate = organization.ExpireDate.ToUniversalTime();
+                }
+
+                var apiKey = "";
+                if (updateApikey)
+                {
+                    apiKey = securityHelper.GenerateApiToken(organization.Name);
+                }
+
+                OrganizationDetails newOrganization =
+                    organization.MapToEntity(organization, apiKey, Constants.Status.Active);
                 newOrganization.Id = id;
-                var result = await organizationDetailRepo.UpdateOrganizationAsync(newOrganization);
+                var result = await organizationDetailRepo.UpdateOrganizationAsync(newOrganization, updateApikey);
                 if (result > 0)
                 {
-                    return responseHelper.UpdateSuccessResponse(result);
+                    return updateApikey
+                        ? responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.Created, new IdResponse<string>
+                        {
+                            Id = apiKey,
+                            Message = "Organization update successfully, Use this ID as api key"
+                        })
+                        : responseHelper.UpdateSuccessResponse(result);
                 }
 
                 return responseHelper.UpdateFailedResponse();

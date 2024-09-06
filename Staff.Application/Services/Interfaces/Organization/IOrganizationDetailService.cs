@@ -20,7 +20,7 @@ public interface IOrganizationDetailService
 
     #region PUT Methods
 
-    Task<ResponseWithCode<dynamic>> UpdateOrganizationAsync(OrganizationRequestDto organization, long id);
+    Task<ResponseWithCode<dynamic>> UpdateOrganizationAsync(OrganizationRequestDto organization, long id,bool updateApikey);
 
     #endregion
 

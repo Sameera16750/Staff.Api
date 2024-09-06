@@ -6,13 +6,17 @@ public class OrganizationDetailsResponseDto
 {
     public long Id { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; }= string.Empty;
 
-    public string Address { get; set; }
+    public string Address { get; set; }= string.Empty;
 
-    public string ContactNo { get; set; }
+    public string ContactNo { get; set; }= string.Empty;
 
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
+
+    public string ApiKey { get; set; } = string.Empty;
+    
+    public DateTime ExpireDate { get; set; }
 
     public OrganizationDetailsResponseDto MapToResponse(OrganizationDetails organizationDetails)
     {
@@ -23,6 +27,8 @@ public class OrganizationDetailsResponseDto
             Address = organizationDetails.Address,
             Email = organizationDetails.Email,
             ContactNo = organizationDetails.ContactNo,
+            ApiKey = organizationDetails.ApiKey,
+            ExpireDate = organizationDetails.ExpireDate
         };
     }
 

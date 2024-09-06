@@ -22,7 +22,7 @@ public interface IOrganizationDetailRepo
 
     #region PUT Methods
 
-    Task<long> UpdateOrganizationAsync(OrganizationDetails organizationDetails);
+    Task<long> UpdateOrganizationAsync(OrganizationDetails organizationDetails, bool isKeyUpdate = false);
 
     #endregion
 }

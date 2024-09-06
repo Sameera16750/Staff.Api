@@ -19,8 +19,11 @@ namespace Staff.Application.Models.Request.Organization
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
         public required string Email { get; set; }
+        
+        [Required(ErrorMessage = "Expire date is required")]
+        public required DateTime ExpireDate { get; set; }
 
-        public OrganizationDetails MapToEntity(OrganizationRequestDto organizationRequestDto, int status)
+        public OrganizationDetails MapToEntity(OrganizationRequestDto organizationRequestDto,string apiKey, int status)
         {
             return new OrganizationDetails
             {
@@ -29,6 +32,8 @@ namespace Staff.Application.Models.Request.Organization
                 ContactNo = organizationRequestDto.ContactNo,
                 Email = organizationRequestDto.Email,
                 Name = organizationRequestDto.Name,
+                ExpireDate = organizationRequestDto.ExpireDate,
+                ApiKey = apiKey,
                 Status = status
             };
         }

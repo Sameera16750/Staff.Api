@@ -58,9 +58,10 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPut("Update/{id:long}")]
-        public async Task<IActionResult> UpdateOrganizationAsync(long id, [FromBody] OrganizationRequestDto body)
+        public async Task<IActionResult> UpdateOrganizationAsync(long id, [FromBody] OrganizationRequestDto body,
+            [FromQuery] bool updateApikey = false)
         {
-            var response = await organizationDetailService.UpdateOrganizationAsync(body, id);
+            var response = await organizationDetailService.UpdateOrganizationAsync(body, id, updateApikey);
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
