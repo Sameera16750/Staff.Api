@@ -29,7 +29,7 @@ public class DepartmentService(
             if (org == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization);
             var existingDepartment = await departmentRepo
                 .GetDepartmentByNameAsync(requestDto.Name, organizationId, Constants.Status.Active);
-            if (existingDepartment == null) return responseHelper.BadRequest(Constants.Messages.Error.DepartmentExist);
+            if (existingDepartment != null) return responseHelper.BadRequest(Constants.Messages.Error.DepartmentExist);
             var department = requestDto.MapToEntity(requestDto, organizationId, Constants.Status.Active);
             var result = await departmentRepo.SaveDepartmentAsync(department);
             return result == Constants.ProcessStatus.Failed

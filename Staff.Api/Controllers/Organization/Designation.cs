@@ -18,9 +18,9 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPost("Save")]
-        public async Task<IActionResult> SaveDesignationAsync([FromBody] DesignationRequestDto request,
-            [FromQuery] long organizationId)
+        public async Task<IActionResult> SaveDesignationAsync([FromBody] DesignationRequestDto request)
         {
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
             var result = await designationService.SaveDesignationAsync(request, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }

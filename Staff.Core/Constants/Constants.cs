@@ -78,4 +78,14 @@ public static class Constants
     }
 
     #endregion
+
+    #region Headers
+
+    public static class Headers
+    {
+        public static readonly string ApiKeyHeader = "X-Api-Key";
+        public static readonly string OrganizationId = "OrganizationId";
+    }
+
+    #endregion
 }
