@@ -63,7 +63,8 @@ public class DepartmentRepo(ApplicationDbContext context, ILogger<IDepartmentRep
         var totalCount = await context.Department.Where(o =>
                 (((o.Name.Contains(search) || (o.OrganizationDetails!.Name.Contains(search))) &&
                   (o.Status == departmentStatus) &&
-                  (o.OrganizationDetails!.Id == organization && o.OrganizationDetails!.Status == organizationStatus))))
+                  ((o.OrganizationId == 0 || o.OrganizationDetails!.Id == organization) &&
+                   o.OrganizationDetails!.Status == organizationStatus))))
             .CountAsync();
 
         var result = await context.Department.Include(d => d.OrganizationDetails).Where(o =>

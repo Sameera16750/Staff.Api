@@ -1,5 +1,7 @@
+using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
+using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Application.Services.Interfaces.Organization;
 
@@ -7,16 +9,15 @@ public interface IDesignationService
 {
     #region POST Methods
 
-    Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request , long organizationId);
+    Task<ResponseWithCode<dynamic>> SaveDesignationAsync(DesignationRequestDto request, long organizationId);
 
     #endregion
 
     #region GET Methods
 
-    Task<ResponseWithCode<dynamic>> GetDesignationByIdAsync(long id);
+    Task<ResponseWithCode<dynamic>> GetDesignationByIdAsync(long id, long organizationId);
 
-    Task<ResponseWithCode<dynamic>> GetAllDesignationAsync(string search, int pageNumber, int pageSize,
-        int designationStatus, long department, int departmentStatus, int organizationStatus);
+    Task<ResponseWithCode<dynamic>> GetAllDesignationAsync(DesignationFiltersDto filters, StatusDto status,long organizationId);
 
     #endregion
 
@@ -28,7 +29,7 @@ public interface IDesignationService
 
     #region DELETE Methods
 
-    Task<ResponseWithCode<dynamic>> DeleteDesignationAsync(long id);
+    Task<ResponseWithCode<dynamic>> DeleteDesignationAsync(long id,long organizationId);
 
     #endregion
 }

@@ -1,11 +1,13 @@
 using System.Net;
 using Microsoft.Extensions.Logging;
 using Staff.Application.Helpers.ResponseHelper;
+using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
 using Staff.Core.Constants;
+using Staff.Infrastructure.Models.Staff;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
 namespace Staff.Application.Services.Implementations.Organization;
@@ -25,13 +27,8 @@ public class DesignationService(
         try
         {
             logger.LogInformation("Save designation processing ...");
-            var department =
-                await departmentRepo.GetDepartmentAsync(request.DepartmentId, organizationId, Constants.Status.Active);
-            if (department == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
-            var designation =
-                await designationRepo.GetDesignationByNameAsync(request.Name, request.DepartmentId,
-                    Constants.Status.Active);
-            if (designation != null) return responseHelper.BadRequest(Constants.Messages.Error.DesignationExists);
+            var validate = await ValidateDesignationRequest(request, 0, organizationId);
+            if (validate != null) return validate;
             var result =
                 await designationRepo.SaveDesignationAsync(request.MapToEntity(request, Constants.Status.Active));
             return result == Constants.ProcessStatus.Failed
@@ -49,12 +46,13 @@ public class DesignationService(
 
     #region GET Methods
 
-    public async Task<ResponseWithCode<dynamic>> GetDesignationByIdAsync(long id)
+    public async Task<ResponseWithCode<dynamic>> GetDesignationByIdAsync(long id, long organizationId)
     {
         try
         {
             logger.LogInformation("Get designation processing ...");
-            var designation = await designationRepo.GetDesignationByIdAsync(id, Constants.Status.Active);
+            var designation =
+                await designationRepo.GetDesignationByIdAsync(id, organizationId, Constants.Status.Active);
             if (designation == null) return responseHelper.NotFoundErrorResponse();
             var response = new DesignationResponseDto().MapToResponse(designation);
             return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
@@ -66,22 +64,13 @@ public class DesignationService(
         }
     }
 
-    public async Task<ResponseWithCode<dynamic>> GetAllDesignationAsync(string search, int pageNumber, int pageSize,
-        int designationStatus, long department,
-        int departmentStatus, int organizationStatus)
+    public async Task<ResponseWithCode<dynamic>> GetAllDesignationAsync(DesignationFiltersDto filters, StatusDto status,
+        long organizationId)
     {
         try
         {
             logger.LogInformation("GetAll designation processing ...");
-            var designations = await designationRepo.GetAllDesignationsAsync(
-                search: search,
-                pageNumber: pageNumber,
-                pageSize: pageSize,
-                designationStatus: designationStatus,
-                department: department,
-                departmentStatus: departmentStatus,
-                organizationStatus: organizationStatus
-            );
+            var designations = await designationRepo.GetAllDesignationsAsync(filters, status, organizationId);
             var response = new PaginatedListResponseDto<DesignationResponseDto>();
             if (designations != null)
             {
@@ -104,11 +93,12 @@ public class DesignationService(
 
     #region PUT Methods
 
-    public async Task<ResponseWithCode<dynamic>> UpdateDesignationAsync(DesignationRequestDto request, long id, long organizationId)
+    public async Task<ResponseWithCode<dynamic>> UpdateDesignationAsync(DesignationRequestDto request, long id,
+        long organizationId)
     {
         try
         {
-            var validate = await ValidateDesignationRequest(request, id,organizationId);
+            var validate = await ValidateDesignationRequest(request, id, organizationId);
             if (validate != null) return validate;
             logger.LogInformation("Update designation processing ...");
             var updated = request.MapToEntity(request, Constants.Status.Active);
@@ -132,11 +122,11 @@ public class DesignationService(
 
     #region DELETE Methods
 
-    public async Task<ResponseWithCode<dynamic>> DeleteDesignationAsync(long id)
+    public async Task<ResponseWithCode<dynamic>> DeleteDesignationAsync(long id, long organizationId)
     {
         try
         {
-            var result = await designationRepo.DeleteDesignationAsync(id);
+            var result = await designationRepo.DeleteDesignationAsync(id, organizationId);
             if (result == Constants.ProcessStatus.NotFound)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidDesignation);
@@ -157,14 +147,16 @@ public class DesignationService(
 
     #region Private Methods
 
-    private async Task<ResponseWithCode<dynamic>?> ValidateDesignationRequest(DesignationRequestDto request, long id, long organizationId)
+    private async Task<ResponseWithCode<dynamic>?> ValidateDesignationRequest(DesignationRequestDto request, long id,
+        long organizationId)
     {
         logger.LogInformation("Starting to validate designation ...");
 
-        var department = await departmentRepo.GetDepartmentAsync(request.DepartmentId,organizationId, Constants.Status.Active);
+        var department =
+            await departmentRepo.GetDepartmentAsync(request.DepartmentId, organizationId, Constants.Status.Active);
         if (department == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidDepartment);
         var designation =
-            await designationRepo.GetDesignationByNameAsync(request.Name, request.DepartmentId,
+            await designationRepo.GetDesignationByNameAsync(request.Name, request.DepartmentId, organizationId,
                 Constants.Status.Active);
         if (designation != null && (id > 0 && id != designation.Id))
             return responseHelper.BadRequest(Constants.Messages.Error.DesignationExists);

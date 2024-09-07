@@ -21,7 +21,8 @@ namespace Staff.Api.Controllers.Organization
         [HttpPost("Save")]
         public async Task<IActionResult> SaveStaff([FromBody] StaffMemberRequestDto requestDto)
         {
-            var result = await staffMemberService.SaveStaffMemberAsync(requestDto);
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await staffMemberService.SaveStaffMemberAsync(requestDto, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
@@ -44,7 +45,8 @@ namespace Staff.Api.Controllers.Organization
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllStaffMembersAsync([FromQuery] StaffFiltersDto filters)
         {
-            var result = await staffMemberService.GetAllStaffMembersAsync(filters, new StatusDto());
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await staffMemberService.GetAllStaffMembersAsync(filters, new StatusDto(), organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
@@ -58,7 +60,8 @@ namespace Staff.Api.Controllers.Organization
         [HttpPut("Update/{id:long}")]
         public async Task<IActionResult> UpdateStaffMemberAsync([FromBody] StaffMemberRequestDto requestDto, long id)
         {
-            var result = await staffMemberService.UpdateStaffMemberAsync(requestDto, id);
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await staffMemberService.UpdateStaffMemberAsync(requestDto, id, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

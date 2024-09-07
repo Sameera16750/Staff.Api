@@ -1,5 +1,7 @@
+using Staff.Application.Models.Request.common;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.Models;
+using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Infrastructure.Repositories.Interfaces.Organization;
 
@@ -13,10 +15,9 @@ public interface IDesignationRepo
 
     #region GET Methods
 
-    Task<Designation?> GetDesignationByNameAsync(string name, long department, int status);
-    Task<Designation?> GetDesignationByIdAsync(long id, int status);
-    Task<PaginatedListDto<Designation>?> GetAllDesignationsAsync(string search, int pageNumber, int pageSize,
-        int designationStatus, long department, int departmentStatus, int organizationStatus);
+    Task<Designation?> GetDesignationByNameAsync(string name, long department,long organization, int status);
+    Task<Designation?> GetDesignationByIdAsync(long id,long organizationId, int status);
+    Task<PaginatedListDto<Designation>?> GetAllDesignationsAsync(DesignationFiltersDto filters, StatusDto status,long organizationId);
 
     #endregion
 
@@ -26,7 +27,7 @@ public interface IDesignationRepo
 
     #region DELETE Methods
 
-    Task<long> DeleteDesignationAsync(long id);
+    Task<long> DeleteDesignationAsync(long id,long organizationId);
 
     #endregion
 }

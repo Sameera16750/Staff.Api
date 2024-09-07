@@ -48,7 +48,7 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
         return staffMembers;
     }
 
-    public async Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status)
+    public async Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status,long organizationId)
     {
         logger.LogInformation("Getting all staff members ...");
 
@@ -65,7 +65,7 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
                                              status.Organization) &&
             (filters.DesignationId <= 0 || s.DesignationId == filters.DesignationId) &&
             (filters.DepartmentId <= 0 || s.Designation.DepartmentId == filters.DepartmentId) &&
-            (filters.OrganizationId <= 0 || s.Designation.Department.OrganizationId == filters.OrganizationId));
+            (organizationId <= 0 || s.Designation.Department.OrganizationId == organizationId));
 
         var count = await query.CountAsync();
 

@@ -21,13 +21,15 @@ public class StaffMemberService(
 {
     #region POST Methods
 
-    public async Task<ResponseWithCode<dynamic>> SaveStaffMemberAsync(StaffMemberRequestDto staffMember)
+    public async Task<ResponseWithCode<dynamic>> SaveStaffMemberAsync(StaffMemberRequestDto staffMember,
+        long organizationId)
     {
         try
         {
             logger.LogInformation("Saving staff member ...");
             var designation =
-                await designationRepo.GetDesignationByIdAsync(staffMember.DesignationId, Constants.Status.Active);
+                await designationRepo.GetDesignationByIdAsync(staffMember.DesignationId, organizationId,
+                    Constants.Status.Active);
             if (designation == null) return responseHelper.BadRequest(Constants.Messages.Error.InvalidDesignation);
 
             if (staffMember.Birthday.Kind != DateTimeKind.Utc)
@@ -80,12 +82,12 @@ public class StaffMemberService(
     }
 
     public async Task<ResponseWithCode<dynamic>> GetAllStaffMembersAsync(StaffFiltersDto filters,
-        StatusDto status)
+        StatusDto status, long organizationId)
     {
         try
         {
             logger.LogInformation("Getting all staff members ...");
-            var staff = await staffMemberRepo.GetAllMembersAsync(filters, status);
+            var staff = await staffMemberRepo.GetAllMembersAsync(filters, status, organizationId);
             var response = new PaginatedListResponseDto<StaffMemberResponseDto>();
             if (staff != null)
             {
@@ -106,11 +108,12 @@ public class StaffMemberService(
 
     #region PUT Methods
 
-    public async Task<ResponseWithCode<dynamic>> UpdateStaffMemberAsync(StaffMemberRequestDto staffMember, long id)
+    public async Task<ResponseWithCode<dynamic>> UpdateStaffMemberAsync(StaffMemberRequestDto staffMember, long id,
+        long organizationId)
     {
         try
         {
-            var validations = await ValidateRequestDataSync(staffMember);
+            var validations = await ValidateRequestDataSync(staffMember, organizationId);
             if (validations != null) return validations;
             var updatedStaffMember = staffMember.MapToEntity(staffMember);
             updatedStaffMember.Id = id;
@@ -129,7 +132,7 @@ public class StaffMemberService(
     }
 
     #endregion
-    
+
     #region DELETE Methods
 
     public async Task<ResponseWithCode<dynamic>> DeleteStaffMemberAsync(long id)
@@ -157,10 +160,12 @@ public class StaffMemberService(
 
     #region Private Methods
 
-    private async Task<ResponseWithCode<dynamic>?> ValidateRequestDataSync(StaffMemberRequestDto staffMember)
+    private async Task<ResponseWithCode<dynamic>?> ValidateRequestDataSync(StaffMemberRequestDto staffMember,
+        long organizationId)
     {
         var designation =
-            await designationRepo.GetDesignationByIdAsync(staffMember.DesignationId, Constants.Status.Active);
+            await designationRepo.GetDesignationByIdAsync(staffMember.DesignationId, organizationId,
+                Constants.Status.Active);
         if (designation == null)
         {
             logger.LogError("Invalid designation");

@@ -11,7 +11,7 @@ public class ApiKeyMiddleware(RequestDelegate next)
     {
         if (!context.Request.Headers.TryGetValue(Constants.Headers.ApiKeyHeader, out var extractedApiKey))
         {
-            context.Response.StatusCode = 401; // Unauthorized
+            context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(new MessageResponse { Message = "API Key is missing." });
             return;
         }
@@ -21,12 +21,12 @@ public class ApiKeyMiddleware(RequestDelegate next)
 
         if (organization == null)
         {
-            context.Response.StatusCode = 401; // Unauthorized
+            context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(new MessageResponse { Message = "Unauthorized client." });
             return;
         }
 
         context.Items[Constants.Headers.OrganizationId] = organization.Id;
-        await next(context); // Call the next
+        await next(context);
     }
 }

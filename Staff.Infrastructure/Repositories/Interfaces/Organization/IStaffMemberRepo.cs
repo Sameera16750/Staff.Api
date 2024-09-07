@@ -17,7 +17,7 @@ public interface IStaffMemberRepo
 
     Task<StaffMember?> GetStaffMemberByIdAsync(long id, int status);
 
-    Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status);
+    Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status,long organizationId);
 
     #endregion
 
