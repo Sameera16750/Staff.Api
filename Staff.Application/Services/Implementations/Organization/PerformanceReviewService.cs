@@ -49,12 +49,13 @@ public class PerformanceReviewService(
 
     #region GET Methods
 
-    public async Task<ResponseWithCode<dynamic>> GetPerformanceReviewByIdAsync(long id, StatusDto status)
+    public async Task<ResponseWithCode<dynamic>> GetPerformanceReviewByIdAsync(long id, long organizationId,
+        StatusDto status)
     {
         try
         {
             logger.LogInformation("Getting performance review ...");
-            var review = await performanceReviewRepo.GetPerformanceReviewByIdAsync(id, status);
+            var review = await performanceReviewRepo.GetPerformanceReviewByIdAsync(id, organizationId, status);
             if (review == null)
             {
                 logger.LogError($"Failed to get performance review : {id}");
@@ -73,12 +74,12 @@ public class PerformanceReviewService(
     }
 
     public async Task<ResponseWithCode<dynamic>> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters,
-        StatusDto status)
+        long organizationId, StatusDto status)
     {
         try
         {
             logger.LogInformation("GetAll reviews processing ...");
-            var reviews = await performanceReviewRepo.GetAllPerformanceReviewsAsync(filters, status);
+            var reviews = await performanceReviewRepo.GetAllPerformanceReviewsAsync(filters, organizationId, status);
             var response = new PaginatedListResponseDto<PerformanceReviewResponseDto>();
             if (reviews != null)
             {
@@ -112,21 +113,23 @@ public class PerformanceReviewService(
         }
 
         var staffMember =
-            await staffMemberRepo.GetStaffMemberByIdAsync(request.StaffMemberId, Constants.Status.Active);
-        var reviewer = await staffMemberRepo.GetStaffMemberByIdAsync(request.ReviewerId, Constants.Status.Active);
+            await staffMemberRepo.GetStaffMemberByIdAsync(request.StaffMemberId, organizationId,
+                Constants.Status.Active);
+        var reviewer =
+            await staffMemberRepo.GetStaffMemberByIdAsync(request.ReviewerId, organizationId, Constants.Status.Active);
 
         if (request.ReviewDate.Kind != DateTimeKind.Utc)
         {
             request.ReviewDate = request.ReviewDate.ToUniversalTime();
         }
 
-        if (staffMember == null || staffMember.Designation!.Department!.OrganizationId != organizationId)
+        if (staffMember == null)
         {
             logger.LogError($"Staff member with id {request.StaffMemberId} was not found");
             return responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff);
         }
 
-        if (reviewer != null && reviewer.Designation!.Department!.OrganizationId == organizationId) return null;
+        if (reviewer != null) return null;
         logger.LogError($"Reviewer with id {request.ReviewerId} was not found");
         return responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff, "for reviewer");
     }

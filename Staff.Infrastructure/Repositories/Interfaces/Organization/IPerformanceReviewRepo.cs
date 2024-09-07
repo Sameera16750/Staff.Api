@@ -15,10 +15,10 @@ public interface IPerformanceReviewRepo
 
     #region GET Methods
 
-    Task<PerformanceReview?> GetPerformanceReviewByIdAsync(long id, StatusDto status);
+    Task<PerformanceReview?> GetPerformanceReviewByIdAsync(long id, long organizationId, StatusDto status);
 
     Task<PaginatedListDto<PerformanceReview>?> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters,
-        StatusDto status);
+        long organizationId, StatusDto status);
 
     #endregion
 }

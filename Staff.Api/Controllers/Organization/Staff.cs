@@ -36,7 +36,8 @@ namespace Staff.Api.Controllers.Organization
         [HttpGet("Get/{id:long}")]
         public async Task<IActionResult> GetStaffMemberByIdAsync(long id)
         {
-            var result = await staffMemberService.GetStaffMemberByIdAsync(id, Constants.Status.Active);
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await staffMemberService.GetStaffMemberByIdAsync(id, organizationId, Constants.Status.Active);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

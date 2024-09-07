@@ -64,12 +64,12 @@ public class StaffMemberService(
 
     #region GET Methods
 
-    public async Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id, int status)
+    public async Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id,long organizationId, int status)
     {
         try
         {
             logger.LogInformation("Getting staff member ...");
-            var staffMember = await staffMemberRepo.GetStaffMemberByIdAsync(id, status);
+            var staffMember = await staffMemberRepo.GetStaffMemberByIdAsync(id, organizationId,status);
             if (staffMember == null) return responseHelper.NotFoundErrorResponse();
             return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK,
                 new StaffMemberResponseDto().MapToResponse(staffMember));

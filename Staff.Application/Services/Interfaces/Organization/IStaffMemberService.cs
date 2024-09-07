@@ -15,7 +15,7 @@ public interface IStaffMemberService
 
     #region GET Methods
 
-    Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id, int status);
+    Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id, long organizationId,int status);
 
     Task<ResponseWithCode<dynamic>> GetAllStaffMembersAsync(StaffFiltersDto requestDto, StatusDto status,long organizationId);
 

@@ -15,9 +15,10 @@ public interface IPerformanceReviewService
 
     #region GET Methods
 
-    Task<ResponseWithCode<dynamic>> GetPerformanceReviewByIdAsync(long id, StatusDto status);
+    Task<ResponseWithCode<dynamic>> GetPerformanceReviewByIdAsync(long id, long organizationId, StatusDto status);
 
-    Task<ResponseWithCode<dynamic>> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters, StatusDto status);
+    Task<ResponseWithCode<dynamic>> GetAllPerformanceReviewsAsync(PerformanceReviewFilterDto filters,
+        long organizationId, StatusDto status);
 
     #endregion
 }

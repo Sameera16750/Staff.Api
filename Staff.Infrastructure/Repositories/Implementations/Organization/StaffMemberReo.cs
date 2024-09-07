@@ -34,7 +34,7 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
 
     #region GET Methods
 
-    public async Task<StaffMember?> GetStaffMemberByIdAsync(long id, int status)
+    public async Task<StaffMember?> GetStaffMemberByIdAsync(long id, long organizationId, int status)
     {
         logger.LogInformation("Getting staff member by id");
         var staffMembers = await context.StaffMember.Include(s => s.Designation)
@@ -42,13 +42,15 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
             .FirstOrDefaultAsync(s =>
                 (s.Id == id && s.Status == status && s.Designation!.Status == Constants.Status.Active &&
                  s.Designation.Department!.Status == Constants.Status.Active &&
+                 s.Designation.Department.OrganizationId == organizationId &&
                  s.Designation.Department.OrganizationDetails!.Status == Constants.Status.Active));
 
         if (staffMembers == null) logger.LogWarning("Staff member not found");
         return staffMembers;
     }
 
-    public async Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status,long organizationId)
+    public async Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status,
+        long organizationId)
     {
         logger.LogInformation("Getting all staff members ...");
 

@@ -27,19 +27,21 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
         }
 
         logger.LogInformation("Performance review saved");
-        return result;
+        return performanceReview.Id;
     }
 
     #endregion
 
     #region GET Methods
 
-    public async Task<PerformanceReview?> GetPerformanceReviewByIdAsync(long id, StatusDto status)
+    public async Task<PerformanceReview?> GetPerformanceReviewByIdAsync(long id, long organizationId, StatusDto status)
     {
         logger.LogInformation("Getting performance review by id");
         var review =
             await context.PerformanceReview.Include(r => (r.StaffMember)).Include(r => r.Reviewer)
-                .FirstOrDefaultAsync(r => r.Id == id && r.Status == status.PerformanceReview);
+                .FirstOrDefaultAsync(r => r.Id == id && r.Status == status.PerformanceReview &&
+                                          (organizationId <= 0 ||
+                                           r.StaffMember!.Designation!.Department!.OrganizationId == organizationId));
         if (review == null)
         {
             logger.LogError("performance review not found");
@@ -50,8 +52,7 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
     }
 
     public async Task<PaginatedListDto<PerformanceReview>?> GetAllPerformanceReviewsAsync(
-        PerformanceReviewFilterDto filters,
-        StatusDto status)
+        PerformanceReviewFilterDto filters, long organizationId, StatusDto status)
     {
         var query = context.PerformanceReview.Include(p => p.Reviewer).Include(p => p.StaffMember).Where(p =>
             (p.Status == status.PerformanceReview && (p.ReviewComment.ToLower().Contains(filters.Search.ToLower()) ||
@@ -63,7 +64,8 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
                                                           .Contains(filters.Search.ToLower()) ||
                                                       p.StaffMember.LastName!.ToLower()
                                                           .Contains(filters.Search.ToLower())) &&
-             (filters.DepartmentId == 0 || filters.DepartmentId == p.StaffMember!.Designation!.DepartmentId)));
+             (filters.DepartmentId == 0 || filters.DepartmentId == p.StaffMember!.Designation!.DepartmentId) &&
+             (organizationId <= 0 || organizationId == p.StaffMember!.Designation!.Department!.OrganizationId)));
         var count = await query.CountAsync();
         var reviews = await query
             .OrderBy(d => d.Id)

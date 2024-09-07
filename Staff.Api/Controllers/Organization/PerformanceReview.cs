@@ -4,6 +4,7 @@ using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
+using Staff.Core.Constants;
 using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Api.Controllers.Organization
@@ -18,9 +19,10 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPost("Save")]
-        public async Task<IActionResult> SavePerformanceReview([FromBody] PerformanceReviewRequestDto request, [FromQuery] long organizationId)
+        public async Task<IActionResult> SavePerformanceReview([FromBody] PerformanceReviewRequestDto request)
         {
-            var result = await performanceReviewService.SavePerformanceReview(request,organizationId);
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await performanceReviewService.SavePerformanceReview(request, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 
@@ -32,9 +34,11 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpGet("Get/{id:long}")]
-        public async Task<IActionResult> GetOrganizationByIdAsync(long id)
+        public async Task<IActionResult> GetReviewByIdAsync(long id)
         {
-            var response = await performanceReviewService.GetPerformanceReviewByIdAsync(id, new StatusDto());
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var response =
+                await performanceReviewService.GetPerformanceReviewByIdAsync(id, organizationId, new StatusDto());
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
@@ -42,9 +46,10 @@ namespace Staff.Api.Controllers.Organization
             Type = typeof(PaginatedListResponseDto<PerformanceReviewResponseDto>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetOrganizationListAsync([FromQuery] PerformanceReviewFilterDto filters)
+        public async Task<IActionResult> GetReviewListAsync([FromQuery] PerformanceReviewFilterDto filters)
         {
-            var result = await performanceReviewService.GetAllPerformanceReviewsAsync(filters, new StatusDto());
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await performanceReviewService.GetAllPerformanceReviewsAsync(filters,organizationId, new StatusDto());
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

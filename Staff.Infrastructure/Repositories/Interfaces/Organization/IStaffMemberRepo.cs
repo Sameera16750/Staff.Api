@@ -15,7 +15,7 @@ public interface IStaffMemberRepo
 
     #region GET Methods
 
-    Task<StaffMember?> GetStaffMemberByIdAsync(long id, int status);
+    Task<StaffMember?> GetStaffMemberByIdAsync(long id,long organizationId, int status);
 
     Task<PaginatedListDto<StaffMember>?> GetAllMembersAsync(StaffFiltersDto filters, StatusDto status,long organizationId);
 
