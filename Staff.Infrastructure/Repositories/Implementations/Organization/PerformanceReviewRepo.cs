@@ -76,4 +76,36 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
     }
 
     #endregion
+
+    #region PUT Methods
+
+    public async Task<long> UpdatePerformanceReviewAsync(PerformanceReview performanceReview, long organizationId)
+    {
+        logger.LogInformation("checking available reviews...");
+        var exist = await context.PerformanceReview.FirstOrDefaultAsync(r =>
+            (r.Status == Constants.Status.Active && r.Id==performanceReview.Id &&
+             r.StaffMember!.Designation!.Department!.OrganizationId == organizationId));
+
+        if (exist == null)
+        {
+            logger.LogError("review not found");
+            return Constants.ProcessStatus.NotFound;
+        }
+
+        logger.LogInformation("Updating review");
+        context.Entry(exist).CurrentValues.SetValues(performanceReview);
+        context.Entry(exist).State = EntityState.Modified;
+        var result = await context.SaveChangesAsync();
+
+        if (result < 1)
+        {
+            logger.LogWarning("Failed to update review");
+            return Constants.ProcessStatus.Failed;
+        }
+
+        logger.LogInformation("Review updated");
+        return performanceReview.Id;
+    }
+
+    #endregion
 }

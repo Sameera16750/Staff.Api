@@ -49,7 +49,24 @@ namespace Staff.Api.Controllers.Organization
         public async Task<IActionResult> GetReviewListAsync([FromQuery] PerformanceReviewFilterDto filters)
         {
             var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
-            var result = await performanceReviewService.GetAllPerformanceReviewsAsync(filters,organizationId, new StatusDto());
+            var result =
+                await performanceReviewService.GetAllPerformanceReviewsAsync(filters, organizationId, new StatusDto());
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+
+        #endregion
+
+        #region PUT Methods
+
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpPut("Update/{id:long}")]
+        public async Task<IActionResult> UpdateStaffMemberAsync([FromBody] PerformanceReviewRequestDto requestDto,
+            long id)
+        {
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await performanceReviewService.UpdatePerformanceReviewAsync(requestDto, id, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

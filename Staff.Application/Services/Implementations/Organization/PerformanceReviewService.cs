@@ -100,6 +100,44 @@ public class PerformanceReviewService(
 
     #endregion
 
+    #region PUT Methods
+
+    public async Task<ResponseWithCode<dynamic>> UpdatePerformanceReviewAsync(PerformanceReviewRequestDto request,
+        long id, long organizationId)
+    {
+        try
+        {
+            logger.LogInformation("Updating performance review ...");
+            var validity = await ValidateReview(request, organizationId);
+            if (validity != null) return validity;
+            var review = request.MapToEntity(request);
+            review.Id = id;
+            var result =
+                await performanceReviewRepo.UpdatePerformanceReviewAsync(review, organizationId);
+            if (result == Constants.ProcessStatus.Failed)
+            {
+                logger.LogError($"Failed to update performance review : {request.ReviewDate}");
+                return responseHelper.UpdateFailedResponse();
+            }
+
+            if (result == Constants.ProcessStatus.NotFound)
+            {
+                logger.LogError($"Failed to update performance review : {request.ReviewDate}");
+                return responseHelper.BadRequest(Constants.Messages.Error.InvalidReview);
+            }
+
+            logger.LogInformation("Performance review saved successfully");
+            return responseHelper.UpdateSuccessResponse(result);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
     #region Private Methods
 
     private async Task<ResponseWithCode<dynamic>?> ValidateReview(PerformanceReviewRequestDto request,

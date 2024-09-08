@@ -21,4 +21,10 @@ public interface IPerformanceReviewRepo
         long organizationId, StatusDto status);
 
     #endregion
+    
+    #region PUT Methods
+
+    Task<long> UpdatePerformanceReviewAsync(PerformanceReview performanceReview,long organizationId);
+
+    #endregion
 }
