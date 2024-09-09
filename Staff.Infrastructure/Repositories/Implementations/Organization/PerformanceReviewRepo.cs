@@ -83,7 +83,7 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
     {
         logger.LogInformation("checking available reviews...");
         var exist = await context.PerformanceReview.FirstOrDefaultAsync(r =>
-            (r.Status == Constants.Status.Active && r.Id==performanceReview.Id &&
+            (r.Status == Constants.Status.Active && r.Id == performanceReview.Id &&
              r.StaffMember!.Designation!.Department!.OrganizationId == organizationId));
 
         if (exist == null)
@@ -105,6 +105,31 @@ public class PerformanceReviewRepo(ILogger<IPerformanceReviewRepo> logger, Appli
 
         logger.LogInformation("Review updated");
         return performanceReview.Id;
+    }
+
+    #endregion
+
+    #region DELETE Methods
+
+    public async Task<long> DeletePerformanceReviewAsync(long id, long organizationId)
+    {
+        logger.LogInformation("Checking available reviews...");
+        var exist = await context.PerformanceReview.FirstOrDefaultAsync(r =>
+            (r.Id == id && r.Status != Constants.Status.Deleted &&
+             r.StaffMember!.Designation!.Department!.OrganizationId == organizationId));
+        if (exist == null)
+        {
+            logger.LogError("review not found");
+            return Constants.ProcessStatus.NotFound;
+        }
+
+        logger.LogInformation("Deleting review");
+        exist.Status = Constants.Status.Deleted;
+        context.Entry(exist).State = EntityState.Modified;
+        var result = await context.SaveChangesAsync();
+        if (result >= 1) return result;
+        logger.LogWarning("Failed to delete review");
+        return Constants.ProcessStatus.Failed;
     }
 
     #endregion

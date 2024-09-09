@@ -27,4 +27,10 @@ public interface IPerformanceReviewService
     Task<ResponseWithCode<dynamic>> UpdatePerformanceReviewAsync(PerformanceReviewRequestDto request,long id,long organizationId);
 
     #endregion
+    
+    #region DELETE Methods
+    
+    Task<ResponseWithCode<dynamic>> DeletePerformanceReviewAsync(long id, long organizationId);
+
+    #endregion
 }

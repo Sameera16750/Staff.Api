@@ -27,4 +27,10 @@ public interface IPerformanceReviewRepo
     Task<long> UpdatePerformanceReviewAsync(PerformanceReview performanceReview,long organizationId);
 
     #endregion
+
+    #region DELETE Methods
+    
+    Task<long> DeletePerformanceReviewAsync(long id, long organizationId);
+
+    #endregion
 }

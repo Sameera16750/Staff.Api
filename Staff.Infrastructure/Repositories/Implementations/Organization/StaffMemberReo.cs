@@ -87,11 +87,12 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
 
     #region PUT Methods
 
-    public async Task<long> UpdateStaffMemberAsync(StaffMember staffMember)
+    public async Task<long> UpdateStaffMemberAsync(StaffMember staffMember, long organizationId)
     {
         logger.LogInformation("checking available staff member..");
         var exist = await context.StaffMember.FirstOrDefaultAsync(s =>
-            (s.Id == staffMember.Id && staffMember.Status == Constants.Status.Active));
+            (s.Id == staffMember.Id && staffMember.Status == Constants.Status.Active &&
+             s.Designation!.Department!.OrganizationId == organizationId));
 
         if (exist == null)
         {
@@ -118,11 +119,13 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
 
     #region DELETE Methods
 
-    public async Task<long> DeleteStaffMemberAsync(long id)
+    public async Task<long> DeleteStaffMemberAsync(long id, long organizationId)
     {
         logger.LogInformation("Checking available designations");
         var existing =
-            await context.StaffMember.FirstOrDefaultAsync(s => (s.Id == id && s.Status != Constants.Status.Deleted));
+            await context.StaffMember.FirstOrDefaultAsync(s =>
+                (s.Id == id && s.Status != Constants.Status.Deleted &&
+                 s.Designation!.Department!.OrganizationId == organizationId));
         if (existing == null)
         {
             logger.LogWarning($"Staff member {id} not found");

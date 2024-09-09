@@ -76,7 +76,8 @@ namespace Staff.Api.Controllers.Organization
         [HttpDelete("Delete/{id:long}")]
         public async Task<IActionResult> DeleteStaffMemberAsync(long id)
         {
-            var response = await staffMemberService.DeleteStaffMemberAsync(id);
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var response = await staffMemberService.DeleteStaffMemberAsync(id, organizationId);
             return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 

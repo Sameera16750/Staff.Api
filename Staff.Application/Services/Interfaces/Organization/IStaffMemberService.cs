@@ -30,7 +30,7 @@ public interface IStaffMemberService
 
     #region DELETE Methods
 
-    Task<ResponseWithCode<dynamic>> DeleteStaffMemberAsync(long id);
+    Task<ResponseWithCode<dynamic>> DeleteStaffMemberAsync(long id,long organizationId);
 
     #endregion
 }

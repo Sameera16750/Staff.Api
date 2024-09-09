@@ -138,6 +138,29 @@ public class PerformanceReviewService(
 
     #endregion
 
+    #region DELETE Methods
+
+    public async Task<ResponseWithCode<dynamic>> DeletePerformanceReviewAsync(long id, long organizationId)
+    {
+        try
+        {
+            logger.LogInformation("Delete review processing ...");
+            var result = await performanceReviewRepo.DeletePerformanceReviewAsync(id, organizationId);
+            return result == Constants.ProcessStatus.Failed
+                ? responseHelper.DeleteFailedErrorResponse()
+                : result == Constants.ProcessStatus.NotFound
+                    ? responseHelper.BadRequest(Constants.Messages.Error.InvalidReview)
+                    : responseHelper.DeleteSuccessResponse(result);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
     #region Private Methods
 
     private async Task<ResponseWithCode<dynamic>?> ValidateReview(PerformanceReviewRequestDto request,

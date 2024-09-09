@@ -64,12 +64,12 @@ public class StaffMemberService(
 
     #region GET Methods
 
-    public async Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id,long organizationId, int status)
+    public async Task<ResponseWithCode<dynamic>> GetStaffMemberByIdAsync(long id, long organizationId, int status)
     {
         try
         {
             logger.LogInformation("Getting staff member ...");
-            var staffMember = await staffMemberRepo.GetStaffMemberByIdAsync(id, organizationId,status);
+            var staffMember = await staffMemberRepo.GetStaffMemberByIdAsync(id, organizationId, status);
             if (staffMember == null) return responseHelper.NotFoundErrorResponse();
             return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK,
                 new StaffMemberResponseDto().MapToResponse(staffMember));
@@ -117,7 +117,7 @@ public class StaffMemberService(
             if (validations != null) return validations;
             var updatedStaffMember = staffMember.MapToEntity(staffMember);
             updatedStaffMember.Id = id;
-            var result = await staffMemberRepo.UpdateStaffMemberAsync(updatedStaffMember);
+            var result = await staffMemberRepo.UpdateStaffMemberAsync(updatedStaffMember, organizationId);
             return result == Constants.ProcessStatus.NotFound
                 ? responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff)
                 : result == Constants.ProcessStatus.Failed
@@ -135,11 +135,11 @@ public class StaffMemberService(
 
     #region DELETE Methods
 
-    public async Task<ResponseWithCode<dynamic>> DeleteStaffMemberAsync(long id)
+    public async Task<ResponseWithCode<dynamic>> DeleteStaffMemberAsync(long id, long organizationId)
     {
         try
         {
-            var result = await staffMemberRepo.DeleteStaffMemberAsync(id);
+            var result = await staffMemberRepo.DeleteStaffMemberAsync(id, organizationId);
             if (result == Constants.ProcessStatus.NotFound)
             {
                 return responseHelper.BadRequest(Constants.Messages.Error.InvalidStaff);

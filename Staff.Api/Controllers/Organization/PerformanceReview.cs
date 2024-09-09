@@ -62,12 +62,27 @@ namespace Staff.Api.Controllers.Organization
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
         [HttpPut("Update/{id:long}")]
-        public async Task<IActionResult> UpdateStaffMemberAsync([FromBody] PerformanceReviewRequestDto requestDto,
+        public async Task<IActionResult> UpdateReviewAsync([FromBody] PerformanceReviewRequestDto requestDto,
             long id)
         {
             var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
             var result = await performanceReviewService.UpdatePerformanceReviewAsync(requestDto, id, organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+
+        #endregion
+
+        #region DELETE Methods
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpDelete("Delete/{id:long}")]
+        public async Task<IActionResult> DeleteStaffMemberAsync(long id)
+        {
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var response = await performanceReviewService.DeletePerformanceReviewAsync(id, organizationId);
+            return new ObjectResult(response.Response) { StatusCode = (int)response.StatusCode };
         }
 
         #endregion
