@@ -5,24 +5,24 @@ using Staff.Core.Entities.Organization;
 namespace Staff.Core.Entities.Attendance
 {
     [Table("Attendance")]
-    public class Attendance
+    public class AttendanceDetails
     {
         [Key] 
         public long Id { get; set; }
 
         [Required]
-        public StaffMember StaffMember { get; set; }
+        public long StaffMemberId { get; set; }
 
         [Required] 
         public DateTime Date { get; set; }
-
-        [Required] 
-        public DateTime CheckIn { get; set; }
-
-        [Required] 
-        public DateTime CheckOut { get; set; }
+        
+        public DateTime? CheckIn { get; set; }
+        
+        public DateTime? CheckOut { get; set; }
 
         [Required] 
         public int Status { get; set; }
+        
+        public StaffMember? StaffMember { get; set; }
     }
 }

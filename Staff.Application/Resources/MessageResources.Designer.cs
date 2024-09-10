@@ -152,5 +152,29 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("INVALID_REVIEW", resourceCulture);
             }
         }
+        
+        internal static string CHECK_IN_SUCCESS {
+            get {
+                return ResourceManager.GetString("CHECK_IN_SUCCESS", resourceCulture);
+            }
+        }
+        
+        internal static string CHECK_OUT_SUCCESS {
+            get {
+                return ResourceManager.GetString("CHECK_OUT_SUCCESS", resourceCulture);
+            }
+        }
+        
+        internal static string CHECK_IN_FAILED {
+            get {
+                return ResourceManager.GetString("CHECK_IN_FAILED", resourceCulture);
+            }
+        }
+        
+        internal static string CHECK_OUT_FAILED {
+            get {
+                return ResourceManager.GetString("CHECK_OUT_FAILED", resourceCulture);
+            }
+        }
     }
 }

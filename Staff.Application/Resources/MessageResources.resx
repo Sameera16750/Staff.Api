@@ -72,4 +72,16 @@
     <data name="INVALID_REVIEW" xml:space="preserve">
         <value>Provided review Invalid</value>
     </data>
+    <data name="CHECK_IN_SUCCESS" xml:space="preserve">
+        <value>Successfully Checked In</value>
+    </data>
+    <data name="CHECK_OUT_SUCCESS" xml:space="preserve">
+        <value>Successfully Checked Out</value>
+    </data>
+    <data name="CHECK_IN_FAILED" xml:space="preserve">
+        <value>Check In Failed</value>
+    </data>
+    <data name="CHECK_OUT_FAILED" xml:space="preserve">
+        <value>Check Out Failed</value>
+    </data>
 </root>

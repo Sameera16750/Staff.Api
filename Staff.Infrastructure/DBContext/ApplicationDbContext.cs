@@ -18,7 +18,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Department> Department { get; set; }
     public DbSet<Designation> Designation { get; set; }
     public DbSet<StaffMember> StaffMember { get; set; }
-    public DbSet<Attendance> Attendances { get; set; }
+    public DbSet<AttendanceDetails> Attendances { get; set; }
     public DbSet<Bonus> Bonus { get; set; }
     public DbSet<Deductions> Deductions { get; set; }
     public DbSet<Leave> Leave { get; set; }
@@ -56,5 +56,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne<StaffMember>(p => p.StaffMember)
             .WithMany(s => s.ReviewReceived)
             .HasForeignKey(p => p.StaffMemberId);
+
+        modelBuilder.Entity<AttendanceDetails>()
+            .HasOne<StaffMember>(a => a.StaffMember)
+            .WithMany(s => s.AttendanceDetails)
+            .HasForeignKey(a => a.StaffMemberId);
     }
 }

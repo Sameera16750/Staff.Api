@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Staff.Core.Entities.Attendance;
 using Staff.Core.Entities.Authentication;
 
 namespace Staff.Core.Entities.Organization;
@@ -36,4 +37,6 @@ public class StaffMember {
     public ICollection<PerformanceReview>? ReviewGiven { get; set; }
     
     public ICollection<PerformanceReview>? ReviewReceived { get; set; }
+    
+    public ICollection<AttendanceDetails>? AttendanceDetails { get; set; }
 }

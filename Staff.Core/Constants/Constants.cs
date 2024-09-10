@@ -13,6 +13,8 @@ public static class Constants
             public const string SaveSuccess = "SAVE_SUCCESS";
             public const string UpdateSuccess = "UPDATE_SUCCESS";
             public const string DeleteSuccess = "DELETE_SUCCESS";
+            public const string CheckInSuccess = "CHECK_IN_SUCCESS";
+            public const string CheckOtSuccess = "CHECK_OUT_SUCCESS";
         }
 
         #endregion
@@ -36,6 +38,8 @@ public static class Constants
             public const string InvalidStaff = "INVALID_STAFF";
             public const string SameStaffUsageForReviewer = "SAME_STAFF_USAGE_FOR_REVIEWER";
             public const string InvalidReview = "INVALID_REVIEW";
+            public const string CheckInFailed = "CHECK_IN_FAILED";
+            public const string CheckOtFailed = "CHECK_OUT_FAILED";
         }
 
         #endregion
