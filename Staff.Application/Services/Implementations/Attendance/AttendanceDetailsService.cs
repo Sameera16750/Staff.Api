@@ -3,9 +3,12 @@ using Microsoft.Extensions.Logging;
 using Staff.Application.Helpers.DateFormatHelper;
 using Staff.Application.Helpers.ResponseHelper;
 using Staff.Application.Models.Request.Attendance;
+using Staff.Application.Models.Request.common;
+using Staff.Application.Models.Response.Attendance;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Services.Interfaces.Attendance;
 using Staff.Core.Constants;
+using Staff.Infrastructure.Models.Attendance;
 using Staff.Infrastructure.Repositories.Interfaces.Attendance;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 
@@ -54,6 +57,36 @@ public class AttendanceDetailsService(
                 return responseHelper.CreateResponseWithCode<dynamic>(code,
                     responseHelper.CreateMessageResponse(message));
             }
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
+    #region GET Methods
+
+    public async Task<ResponseWithCode<dynamic>> GetAllAttendanceDetailsAsync(AttendanceFiltersDto filters,
+        StatusDto status, long organizationId)
+    {
+        try
+        {
+            logger.LogInformation("Getting all Attendance Details ...");
+
+            filters.FromDate = dateHelper.FormatDate(filters.FromDate);
+            filters.ToDate = dateHelper.FormatDate(filters.ToDate);
+            var attendance = await attendanceDetailsRepo.GetAllAttendanceDetailsAsync(filters, status, organizationId);
+            var response = new PaginatedListResponseDto<AttendanceResponseDto>();
+            if (attendance != null)
+            {
+                response = response.ToPaginatedListResponse(attendance,
+                    new AttendanceResponseDto().MapToListResponse(attendance.Items));
+            }
+
+            return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK, response);
         }
         catch (Exception e)
         {

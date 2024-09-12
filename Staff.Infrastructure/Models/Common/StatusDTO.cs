@@ -9,4 +9,5 @@ public class StatusDto
     public int Designation { get; set; } = Constants.Status.Active;
     public int Staff { get; set; } = Constants.Status.Active;
     public int PerformanceReview { get; set; } = Constants.Status.Active;
+    public int Attendance { get; set; } = Constants.Status.Active;
 }

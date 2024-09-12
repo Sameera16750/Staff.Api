@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Staff.Application.Models.Request.Attendance;
+using Staff.Application.Models.Request.common;
+using Staff.Application.Models.Response.Attendance;
 using Staff.Application.Models.Response.Common;
 using Staff.Application.Services.Interfaces.Attendance;
 using Staff.Core.Constants;
+using Staff.Infrastructure.Models.Attendance;
 
 namespace Staff.Api.Controllers.Attendance
 {
@@ -20,6 +23,20 @@ namespace Staff.Api.Controllers.Attendance
         {
             var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
             var result = await service.SaveAttendanceAsync(requestDto, organizationId);
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+
+        #endregion
+
+        #region GET Methods
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedListResponseDto<AttendanceResponseDto>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllAttendanceAsync([FromQuery] AttendanceFiltersDto filters)
+        {
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await service.GetAllAttendanceDetailsAsync(filters, new StatusDto(), organizationId);
             return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
         }
 

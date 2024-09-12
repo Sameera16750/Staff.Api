@@ -74,13 +74,12 @@ public class StaffMemberReo(ApplicationDbContext context, ILogger<IStaffMemberRe
         var staff = await query.Include(s => s.Designation)
             .OrderBy(d => d.Id)
             .Skip((filters.PageNumber - 1) * filters.PageSize).Take(filters.PageSize).ToListAsync();
-        if (count < 1)
-        {
-            logger.LogWarning("No staff members found");
-        }
+        if (count >= 1)
+            return PaginatedListDto<StaffMember>.Create(source: staff, pageNumber: filters.PageNumber,
+                pageSize: filters.PageSize, totalItems: count);
+        logger.LogWarning("No staff members found");
+        return null;
 
-        return PaginatedListDto<StaffMember>.Create(source: staff, pageNumber: filters.PageNumber,
-            pageSize: filters.PageSize, totalItems: count);
     }
 
     #endregion
