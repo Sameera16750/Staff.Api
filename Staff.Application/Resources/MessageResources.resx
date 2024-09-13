@@ -73,15 +73,24 @@
         <value>Provided review Invalid</value>
     </data>
     <data name="CHECK_IN_SUCCESS" xml:space="preserve">
-        <value>Successfully Checked In</value>
+        <value>Successfully Checked-In</value>
     </data>
     <data name="CHECK_OUT_SUCCESS" xml:space="preserve">
-        <value>Successfully Checked Out</value>
+        <value>Successfully Checked-Out</value>
     </data>
     <data name="CHECK_IN_FAILED" xml:space="preserve">
-        <value>Check In Failed</value>
+        <value>Check-In Failed</value>
     </data>
     <data name="CHECK_OUT_FAILED" xml:space="preserve">
-        <value>Check Out Failed</value>
+        <value>Check_Out Failed</value>
+    </data>
+    <data name="ALREADY_CHECKED_IN" xml:space="preserve">
+        <value>This Staff Member Was Already Checked-In</value>
+    </data>
+    <data name="ALREADY_CHECKED_OUT" xml:space="preserve">
+        <value>This Staff Membe r Was Already Checked-Out</value>
+    </data>
+    <data name="CHECK_IN_REQUIRED" xml:space="preserve">
+        <value>Check-In Required Before Check-Out</value>
     </data>
 </root>

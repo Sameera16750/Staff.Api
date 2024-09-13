@@ -32,13 +32,16 @@ public class AttendanceDetailsService(
             logger.LogInformation("attendance request processing ...");
             var validation = await ValidateRequest(request, organizationId);
             if (validation != null) return validation;
-            var exist = await attendanceDetailsRepo.GetAttendanceDetailsAsync(request.DateAndTime,
+            var exist = await attendanceDetailsRepo.GetAttendanceDetailsAsync(request.Date,
                 request.StaffMemberId,
                 Constants.Status.Active);
             long result;
             if (exist != null)
             {
-                exist.CheckOut = request.DateAndTime;
+                if (request.IsCheckIn) return responseHelper.BadRequest(Constants.Messages.Error.AlreadyCheckedIn);
+                if (exist.CheckOut != null)
+                    return responseHelper.BadRequest(Constants.Messages.Error.AlreadyCheckedOut);
+                exist.CheckOut = request.CheckInCheckOutTime;
                 result = await attendanceDetailsRepo.UpdateAttendanceDetailsAsync(exist);
                 var message = result > 0
                     ? Constants.Messages.Success.CheckOtSuccess
@@ -49,6 +52,7 @@ public class AttendanceDetailsService(
             }
             else
             {
+                if (!request.IsCheckIn) return responseHelper.BadRequest(Constants.Messages.Error.CheckInRequired);
                 result = await attendanceDetailsRepo.SaveAttendanceDetailsAsync(request.MapToEntity(request));
                 var message = result > 0
                     ? Constants.Messages.Success.CheckInSuccess
@@ -116,7 +120,8 @@ public class AttendanceDetailsService(
         }
 
         logger.LogInformation("staff member validated");
-        request.DateAndTime = dateHelper.FormatDate(request.DateAndTime);
+        request.Date = dateHelper.FormatDate(request.Date);
+        request.CheckInCheckOutTime = dateHelper.FormatDate(request.CheckInCheckOutTime);
         return null;
     }
 

@@ -176,5 +176,23 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("CHECK_OUT_FAILED", resourceCulture);
             }
         }
+        
+        internal static string ALREADY_CHECKED_IN {
+            get {
+                return ResourceManager.GetString("ALREADY_CHECKED_IN", resourceCulture);
+            }
+        }
+        
+        internal static string ALREADY_CHECKED_OUT {
+            get {
+                return ResourceManager.GetString("ALREADY_CHECKED_OUT", resourceCulture);
+            }
+        }
+        
+        internal static string CHECK_IN_REQUIRED {
+            get {
+                return ResourceManager.GetString("CHECK_IN_REQUIRED", resourceCulture);
+            }
+        }
     }
 }

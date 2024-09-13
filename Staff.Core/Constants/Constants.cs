@@ -40,6 +40,9 @@ public static class Constants
             public const string InvalidReview = "INVALID_REVIEW";
             public const string CheckInFailed = "CHECK_IN_FAILED";
             public const string CheckOtFailed = "CHECK_OUT_FAILED";
+            public const string AlreadyCheckedIn = "ALREADY_CHECKED_IN";
+            public const string AlreadyCheckedOut = "ALREADY_CHECKED_OUT";
+            public const string CheckInRequired = "CHECK_IN_REQUIRED";
         }
 
         #endregion
