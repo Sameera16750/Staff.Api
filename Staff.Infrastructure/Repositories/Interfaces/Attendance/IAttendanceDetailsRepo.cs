@@ -15,10 +15,12 @@ public interface IAttendanceDetailsRepo
 
     #region GET Methods
 
+    Task<AttendanceDetails?> GetAttendanceDetailsByIdAsync(long id, int status, long organizationId);
+
     Task<AttendanceDetails?> GetAttendanceDetailsAsync(DateTime attendanceDate, long staffId, int status);
 
     Task<PaginatedListDto<AttendanceDetails>?> GetAllAttendanceDetailsAsync(AttendanceFiltersDto filters,
-        StatusDto status,long  organizationId);
+        StatusDto status, long organizationId);
 
     #endregion
 

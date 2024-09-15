@@ -194,5 +194,23 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("CHECK_IN_REQUIRED", resourceCulture);
             }
         }
+        
+        internal static string INVALID_ATTENDANCE {
+            get {
+                return ResourceManager.GetString("INVALID_ATTENDANCE", resourceCulture);
+            }
+        }
+        
+        internal static string INVALID_CHECK_IN_TIME {
+            get {
+                return ResourceManager.GetString("INVALID_CHECK_IN_TIME", resourceCulture);
+            }
+        }
+        
+        internal static string INVALID_CHECKI_IN_CHECK_OUT_TIME {
+            get {
+                return ResourceManager.GetString("INVALID_CHECKI_IN_CHECK_OUT_TIME", resourceCulture);
+            }
+        }
     }
 }

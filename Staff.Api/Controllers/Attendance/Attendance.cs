@@ -41,5 +41,19 @@ namespace Staff.Api.Controllers.Attendance
         }
 
         #endregion
+        
+        #region PUT Methods
+
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IdResponse<long>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(MessageResponse))]
+        [HttpPut("Update/{id:long}")]
+        public async Task<IActionResult> UpdateAttendanceDetailsAsync([FromBody] UpdateAttendanceRequestDto requestDto, long id)
+        {
+            var organizationId = (long)HttpContext.Items[Constants.Headers.OrganizationId]!;
+            var result = await service.UpdateAttendanceDetailsAsync(requestDto, id, organizationId);
+            return new ObjectResult(result.Response) { StatusCode = (int)result.StatusCode };
+        }
+        #endregion
     }
 }

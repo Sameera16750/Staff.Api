@@ -16,7 +16,14 @@ public interface IAttendanceDetailsService
     #region GET Methods
 
     Task<ResponseWithCode<dynamic>> GetAllAttendanceDetailsAsync(AttendanceFiltersDto filters,
-        StatusDto status,long  organizationId);
+        StatusDto status, long organizationId);
+
+    #endregion
+
+    #region PUT Methods
+
+    Task<ResponseWithCode<dynamic>> UpdateAttendanceDetailsAsync(UpdateAttendanceRequestDto request, long id,
+        long organizationId);
 
     #endregion
 }

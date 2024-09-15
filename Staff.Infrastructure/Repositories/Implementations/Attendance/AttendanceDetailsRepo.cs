@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Staff.Application.Models.Request.common;
+using Staff.Core.Constants;
 using Staff.Core.Entities.Attendance;
 using Staff.Infrastructure.DBContext;
 using Staff.Infrastructure.Models;
@@ -26,6 +27,21 @@ public class AttendanceDetailsRepo(ApplicationDbContext context, ILogger<IAttend
 
         logger.LogInformation("saving attendance details completed");
         return attendanceDetails.Id;
+    }
+
+    public async Task<AttendanceDetails?> GetAttendanceDetailsByIdAsync(long id, int status, long organizationId)
+    {
+        logger.LogInformation($"finding attendance details by id:{id}");
+        var attendance = await context.Attendances.FirstOrDefaultAsync(a =>
+            (a.Status == status) && (a.Id == id) &&
+            (a.StaffMember!.Designation!.Department!.OrganizationId == organizationId));
+        if (attendance == null)
+        {
+            logger.LogError("saving attendance details not found");
+        }
+
+        logger.LogInformation("saving attendance details found");
+        return attendance;
     }
 
     #endregion
@@ -79,6 +95,7 @@ public class AttendanceDetailsRepo(ApplicationDbContext context, ILogger<IAttend
         if (count < 1)
         {
             logger.LogError("saving attendance details failed");
+            return Constants.ProcessStatus.Failed;
         }
 
         logger.LogInformation("saving attendance details completed");

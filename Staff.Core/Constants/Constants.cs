@@ -43,6 +43,9 @@ public static class Constants
             public const string AlreadyCheckedIn = "ALREADY_CHECKED_IN";
             public const string AlreadyCheckedOut = "ALREADY_CHECKED_OUT";
             public const string CheckInRequired = "CHECK_IN_REQUIRED";
+            public const string InvalidAttendance = "INVALID_ATTENDANCE";
+            public const string InvalidCheckInTime="INVALID_CHECK_IN_TIME";
+            public const string InvalidCheckInCheckOutTime="INVALID_CHECKI_IN_CHECK_OUT_TIME";
         }
 
         #endregion

@@ -41,6 +41,11 @@ public class AttendanceDetailsService(
                 if (request.IsCheckIn) return responseHelper.BadRequest(Constants.Messages.Error.AlreadyCheckedIn);
                 if (exist.CheckOut != null)
                     return responseHelper.BadRequest(Constants.Messages.Error.AlreadyCheckedOut);
+
+                var dateValid = ValidateTimeRange(exist.Date, exist.CheckIn, request.CheckInCheckOutTime);
+
+                if (dateValid != null) return dateValid;
+
                 exist.CheckOut = request.CheckInCheckOutTime;
                 result = await attendanceDetailsRepo.UpdateAttendanceDetailsAsync(exist);
                 var message = result > 0
@@ -53,6 +58,10 @@ public class AttendanceDetailsService(
             else
             {
                 if (!request.IsCheckIn) return responseHelper.BadRequest(Constants.Messages.Error.CheckInRequired);
+
+                var dateValid = ValidateTimeRange(request.Date, request.CheckInCheckOutTime, null);
+                if (dateValid != null) return dateValid;
+
                 result = await attendanceDetailsRepo.SaveAttendanceDetailsAsync(request.MapToEntity(request));
                 var message = result > 0
                     ? Constants.Messages.Success.CheckInSuccess
@@ -101,6 +110,42 @@ public class AttendanceDetailsService(
 
     #endregion
 
+    #region PUT Methods
+
+    public async Task<ResponseWithCode<dynamic>> UpdateAttendanceDetailsAsync(UpdateAttendanceRequestDto request,
+        long id,
+        long organizationId)
+    {
+        try
+        {
+            logger.LogInformation("attendance request processing ...");
+            var exist = await attendanceDetailsRepo.GetAttendanceDetailsByIdAsync(id, Constants.Status.Active,
+                organizationId);
+            if (exist != null)
+            {
+                logger.LogInformation("Updated attendance details ...");
+                exist.CheckIn = dateHelper.FormatDate(request.CheckInTime);
+                exist.CheckOut = dateHelper.FormatDate(request.CheckOutTime);
+                var dateValid = ValidateTimeRange(exist.Date, exist.CheckIn, exist.CheckOut);
+                if (dateValid != null) return dateValid;
+                var result = await attendanceDetailsRepo.UpdateAttendanceDetailsAsync(exist);
+                return result > 0
+                    ? responseHelper.UpdateSuccessResponse(result)
+                    : responseHelper.UpdateFailedResponse();
+            }
+
+            logger.LogError("attendance details not found");
+            return responseHelper.BadRequest(Constants.Messages.Error.InvalidAttendance);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
     #region Private Methods
 
     private async Task<ResponseWithCode<dynamic>?> ValidateRequest(SaveAttendanceRequestDto request,
@@ -123,6 +168,19 @@ public class AttendanceDetailsService(
         request.Date = dateHelper.FormatDate(request.Date);
         request.CheckInCheckOutTime = dateHelper.FormatDate(request.CheckInCheckOutTime);
         return null;
+    }
+
+    private ResponseWithCode<dynamic>? ValidateTimeRange(DateTime date, DateTime? checkInTime, DateTime? checkOutTime)
+    {
+        if (checkInTime > checkOutTime)
+        {
+            logger.LogError("Provided check-in time invalid");
+            return responseHelper.BadRequest(Constants.Messages.Error.InvalidCheckInTime);
+        }
+
+        if (!(date.Date > checkInTime?.Date) && !(date.Date > checkOutTime?.Date)) return null;
+        logger.LogError("Provided check-in or check-out time invalid");
+        return responseHelper.BadRequest(Constants.Messages.Error.InvalidCheckInCheckOutTime);
     }
 
     #endregion

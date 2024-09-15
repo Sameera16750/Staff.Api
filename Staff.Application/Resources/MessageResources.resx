@@ -88,9 +88,18 @@
         <value>This Staff Member Was Already Checked-In</value>
     </data>
     <data name="ALREADY_CHECKED_OUT" xml:space="preserve">
-        <value>This Staff Membe r Was Already Checked-Out</value>
+        <value>This Staff Member Was Already Checked-Out</value>
     </data>
     <data name="CHECK_IN_REQUIRED" xml:space="preserve">
         <value>Check-In Required Before Check-Out</value>
+    </data>
+    <data name="INVALID_ATTENDANCE" xml:space="preserve">
+        <value>Provided attendance details invalid</value>
+    </data>
+    <data name="INVALID_CHECK_IN_TIME" xml:space="preserve">
+        <value>Check-In time cannot be higher than Check-Out time.</value>
+    </data>
+    <data name="INVALID_CHECKI_IN_CHECK_OUT_TIME" xml:space="preserve">
+        <value>Attendance date cannot be higher than check-in and check-out time</value>
     </data>
 </root>
