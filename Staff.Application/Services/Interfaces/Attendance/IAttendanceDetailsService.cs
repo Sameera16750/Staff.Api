@@ -15,6 +15,7 @@ public interface IAttendanceDetailsService
 
     #region GET Methods
 
+    Task<ResponseWithCode<dynamic>> GetAttendanceAsync(long id,long organizationId);
     Task<ResponseWithCode<dynamic>> GetAllAttendanceDetailsAsync(AttendanceFiltersDto filters,
         StatusDto status, long organizationId);
 
@@ -24,6 +25,12 @@ public interface IAttendanceDetailsService
 
     Task<ResponseWithCode<dynamic>> UpdateAttendanceDetailsAsync(UpdateAttendanceRequestDto request, long id,
         long organizationId);
+
+    #endregion
+
+    #region DELETE Methods
+
+    Task<ResponseWithCode<dynamic>> DeleteAttendanceDetailsAsync(long id, long organizationId);
 
     #endregion
 }

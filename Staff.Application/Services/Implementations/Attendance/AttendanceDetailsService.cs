@@ -78,6 +78,26 @@ public class AttendanceDetailsService(
         }
     }
 
+    public async Task<ResponseWithCode<dynamic>> GetAttendanceAsync(long id, long organizationId)
+    {
+        try
+        {
+            logger.LogInformation("Getting attendance details ...");
+            var attendance =
+                await attendanceDetailsRepo.GetAttendanceDetailsByIdAsync(id, Constants.Status.Active, organizationId);
+            if (attendance != null)
+                return responseHelper.CreateResponseWithCode<dynamic>(HttpStatusCode.OK,
+                    new AttendanceResponseDto().MapToResponse(attendance));
+            logger.LogError("Attendance not found");
+            return responseHelper.NotFoundErrorResponse();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
     #endregion
 
     #region GET Methods
@@ -136,6 +156,36 @@ public class AttendanceDetailsService(
 
             logger.LogError("attendance details not found");
             return responseHelper.BadRequest(Constants.Messages.Error.InvalidAttendance);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return responseHelper.InternalServerErrorResponse();
+        }
+    }
+
+    #endregion
+
+    #region DELETE Methods
+
+    public async Task<ResponseWithCode<dynamic>> DeleteAttendanceDetailsAsync(long id, long organizationId)
+    {
+        try
+        {
+            logger.LogInformation("Attendance delete processing ... ");
+            var exist = await attendanceDetailsRepo.GetAttendanceDetailsByIdAsync(id, Constants.Status.Active,
+                organizationId);
+            if (exist == null)
+            {
+                logger.LogError("Attendance details not found");
+                return responseHelper.BadRequest(Constants.Messages.Error.InvalidAttendance);
+            }
+
+            exist.Status = Constants.Status.Deleted;
+            var result = await attendanceDetailsRepo.UpdateAttendanceDetailsAsync(exist);
+            if (result > 0) return responseHelper.DeleteSuccessResponse(result);
+            logger.LogInformation("Deleted Attendance operation failed");
+            return responseHelper.DeleteFailedErrorResponse();
         }
         catch (Exception e)
         {

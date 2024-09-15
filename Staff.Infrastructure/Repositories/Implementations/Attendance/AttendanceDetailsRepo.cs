@@ -32,7 +32,7 @@ public class AttendanceDetailsRepo(ApplicationDbContext context, ILogger<IAttend
     public async Task<AttendanceDetails?> GetAttendanceDetailsByIdAsync(long id, int status, long organizationId)
     {
         logger.LogInformation($"finding attendance details by id:{id}");
-        var attendance = await context.Attendances.FirstOrDefaultAsync(a =>
+        var attendance = await context.Attendances.Include(a => a.StaffMember).FirstOrDefaultAsync(a =>
             (a.Status == status) && (a.Id == id) &&
             (a.StaffMember!.Designation!.Department!.OrganizationId == organizationId));
         if (attendance == null)
