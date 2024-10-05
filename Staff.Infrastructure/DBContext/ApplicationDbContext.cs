@@ -61,5 +61,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne<StaffMember>(a => a.StaffMember)
             .WithMany(s => s.AttendanceDetails)
             .HasForeignKey(a => a.StaffMemberId);
+
+        modelBuilder.Entity<LeaveType>()
+            .HasOne<OrganizationDetails>(l => l.OrganizationDetails)
+            .WithMany(o => o.LeaveTypes)
+            .HasForeignKey(l => l.OrganizationId);
     }
 }

@@ -212,5 +212,11 @@ namespace Staff.Application.Resources {
                 return ResourceManager.GetString("INVALID_CHECKI_IN_CHECK_OUT_TIME", resourceCulture);
             }
         }
+        
+        internal static string LEAVE_TYPE_EXISTS {
+            get {
+                return ResourceManager.GetString("LEAVE_TYPE_EXISTS", resourceCulture);
+            }
+        }
     }
 }

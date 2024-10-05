@@ -80,7 +80,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
         if (existing == null)
         {
             logger.LogError("Organization doesn't exist");
-            return 0;
+            return Constants.ProcessStatus.NotFound;
         }
 
         var existingApiKey = existing.ApiKey;
@@ -98,7 +98,7 @@ public class OrganizationDetailDetailRepo(ApplicationDbContext context, ILogger<
         if (result < 1)
         {
             logger.LogError("Organization updating failed");
-            return 0;
+            return Constants.ProcessStatus.Failed;
         }
 
         logger.LogInformation("Organization updating Success");

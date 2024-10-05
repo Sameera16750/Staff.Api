@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Staff.Core.Entities.Attendance;
 
 namespace Staff.Core.Entities.Organization
 {
@@ -10,18 +11,20 @@ namespace Staff.Core.Entities.Organization
 
         [Required] public required string Name { get; set; }
 
-        [Required] public required  string Address { get; set; }
+        [Required] public required string Address { get; set; }
 
-        [Required] public required  string ContactNo { get; set; }
+        [Required] public required string ContactNo { get; set; }
 
-        [Required] public required  string Email { get; set; }
+        [Required] public required string Email { get; set; }
 
         [Required] public int Status { get; set; }
-        
+
         [Required] public required string ApiKey { get; set; }
-        
-        [Required] public required  DateTime ExpireDate { get; set; }
+
+        [Required] public required DateTime ExpireDate { get; set; }
 
         public ICollection<Department>? Departments { get; set; } = null;
+
+        public ICollection<LeaveType>? LeaveTypes { get; set; }
     }
 }

@@ -46,6 +46,7 @@ public static class Constants
             public const string InvalidAttendance = "INVALID_ATTENDANCE";
             public const string InvalidCheckInTime="INVALID_CHECK_IN_TIME";
             public const string InvalidCheckInCheckOutTime="INVALID_CHECKI_IN_CHECK_OUT_TIME";
+            public const string LeaveTypeExist = "LEAVE_TYPE_EXISTS";
         }
 
         #endregion

@@ -16,6 +16,7 @@ public static class InfrastructureDiConfigs
         services.AddScoped<IStaffMemberRepo, StaffMemberReo>();
         services.AddScoped<IPerformanceReviewRepo, PerformanceReviewRepo>();
         services.AddScoped<IAttendanceDetailsRepo, AttendanceDetailsRepo>();
+        services.AddScoped<ILeveRepo, LeaveRepo>();
         return services;
     }
 }

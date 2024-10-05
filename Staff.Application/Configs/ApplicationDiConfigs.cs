@@ -24,6 +24,7 @@ public static class ApplicationDiConfigs
         services.AddScoped<IStaffMemberService, StaffMemberService>();
         services.AddScoped<IPerformanceReviewService, PerformanceReviewService>();
         services.AddScoped<IAttendanceDetailsService, AttendanceDetailsService>();
+        services.AddScoped<ILeaveService, LeaveService>();
         return services;
     }
 }

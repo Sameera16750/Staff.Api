@@ -102,4 +102,7 @@
     <data name="INVALID_CHECKI_IN_CHECK_OUT_TIME" xml:space="preserve">
         <value>Attendance date cannot be higher than check-in and check-out time</value>
     </data>
+    <data name="LEAVE_TYPE_EXISTS" xml:space="preserve">
+        <value>This leave type was already exist</value>
+    </data>
 </root>

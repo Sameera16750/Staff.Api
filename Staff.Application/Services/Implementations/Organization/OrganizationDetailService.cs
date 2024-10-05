@@ -142,7 +142,9 @@ namespace Staff.Application.Services.Implementations.Organization
                         : responseHelper.UpdateSuccessResponse(result);
                 }
 
-                return responseHelper.UpdateFailedResponse();
+                return result == Constants.ProcessStatus.NotFound
+                    ? responseHelper.BadRequest(Constants.Messages.Error.InvalidOrganization)
+                    : responseHelper.UpdateFailedResponse();
             }
             catch (Exception e)
             {
