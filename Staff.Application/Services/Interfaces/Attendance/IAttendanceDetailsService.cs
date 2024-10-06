@@ -2,6 +2,7 @@ using Staff.Application.Models.Request.Attendance;
 using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Response.Common;
 using Staff.Infrastructure.Models.Attendance;
+using Staff.Infrastructure.Models.Common;
 
 namespace Staff.Application.Services.Interfaces.Attendance;
 

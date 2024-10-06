@@ -6,6 +6,7 @@ using Staff.Application.Models.Response.Common;
 using Staff.Application.Services.Interfaces.Attendance;
 using Staff.Core.Constants;
 using Staff.Infrastructure.Models.Attendance;
+using Staff.Infrastructure.Models.Common;
 
 namespace Staff.Api.Controllers.Attendance
 {

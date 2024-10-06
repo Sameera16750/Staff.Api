@@ -5,6 +5,7 @@ using Staff.Application.Models.Response.Common;
 using Staff.Application.Models.Response.Organization;
 using Staff.Application.Services.Interfaces.Organization;
 using Staff.Core.Constants;
+using Staff.Infrastructure.Models.Common;
 using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Api.Controllers.Organization

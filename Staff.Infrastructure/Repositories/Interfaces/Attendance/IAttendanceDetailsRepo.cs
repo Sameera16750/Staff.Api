@@ -1,7 +1,7 @@
-using Staff.Application.Models.Request.common;
 using Staff.Core.Entities.Attendance;
 using Staff.Infrastructure.Models;
 using Staff.Infrastructure.Models.Attendance;
+using Staff.Infrastructure.Models.Common;
 
 namespace Staff.Infrastructure.Repositories.Interfaces.Attendance;
 

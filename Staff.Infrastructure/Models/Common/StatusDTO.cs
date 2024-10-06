@@ -1,6 +1,6 @@
 using Staff.Core.Constants;
 
-namespace Staff.Application.Models.Request.common;
+namespace Staff.Infrastructure.Models.Common;
 
 public class StatusDto
 {
@@ -10,4 +10,5 @@ public class StatusDto
     public int Staff { get; set; } = Constants.Status.Active;
     public int PerformanceReview { get; set; } = Constants.Status.Active;
     public int Attendance { get; set; } = Constants.Status.Active;
+    public int LeaveType { get; set; } = Constants.Status.Active;
 }

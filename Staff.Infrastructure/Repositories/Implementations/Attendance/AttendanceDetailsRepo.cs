@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Staff.Application.Models.Request.common;
 using Staff.Core.Constants;
 using Staff.Core.Entities.Attendance;
 using Staff.Infrastructure.DBContext;
 using Staff.Infrastructure.Models;
 using Staff.Infrastructure.Models.Attendance;
+using Staff.Infrastructure.Models.Common;
 using Staff.Infrastructure.Repositories.Interfaces.Attendance;
 
 namespace Staff.Infrastructure.Repositories.Implementations.Attendance;

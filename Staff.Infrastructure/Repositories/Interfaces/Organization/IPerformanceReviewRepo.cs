@@ -1,6 +1,6 @@
-using Staff.Application.Models.Request.common;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.Models;
+using Staff.Infrastructure.Models.Common;
 using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Infrastructure.Repositories.Interfaces.Organization;

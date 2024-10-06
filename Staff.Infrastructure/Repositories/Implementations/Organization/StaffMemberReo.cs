@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Staff.Application.Models.Request.common;
 using Staff.Core.Constants;
 using Staff.Core.Entities.Organization;
 using Staff.Infrastructure.DBContext;
 using Staff.Infrastructure.Models;
+using Staff.Infrastructure.Models.Common;
 using Staff.Infrastructure.Models.Staff;
 using Staff.Infrastructure.Repositories.Interfaces.Organization;
 

@@ -1,6 +1,7 @@
 using Staff.Application.Models.Request.common;
 using Staff.Application.Models.Request.Organization;
 using Staff.Application.Models.Response.Common;
+using Staff.Infrastructure.Models.Common;
 using Staff.Infrastructure.Models.Staff;
 
 namespace Staff.Application.Services.Interfaces.Organization;
